@@ -45,6 +45,7 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Item_Page from "layouts/item_page"
+import Item_Page_ID from "layouts/item_page/api.js";
 import Tradings from "layouts/tradings";
 import Item_Edit from "layouts/item_edit";
 
@@ -125,7 +126,12 @@ const routes = [
     component: <Tradings />,
   },
   {
-    type: "collapse",
+    type: "route",
+    key: "item-dynamic",
+    route: "/item/:id",
+    component: <Item_Page_ID />,
+  },
+  {type: "collapse",
     name: "Item_Edit",
     key: "Item_Edit",
     icon: <Icon fontSize="small">edit</Icon>,

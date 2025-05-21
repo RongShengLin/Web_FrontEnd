@@ -118,7 +118,7 @@ function DefaultProjectCard({ image, label, title, description, action, price })
               {price}
             </MDTypography>
           </MDBox>
-          <MDButton circular="true" iconOnly='true' color="transparent" variant="contained">
+          <MDButton circular iconOnly color="transparent" variant="contained">
             <FavoriteBorderIcon sx={(theme) => ({ color: "primary.main"})}/>
           </MDButton>
         </MDBox>
