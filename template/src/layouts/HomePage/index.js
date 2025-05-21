@@ -49,6 +49,8 @@ import team4 from "assets/images/team-4.jpg";
 import { dark } from "@mui/material/styles/createPalette";
 import { Icon } from "@mui/material";
 
+import ProductList from "api/listComponent"; // <ProductList spcaing={3} xs={12} md={6} xl={4} />
+
 function HomePage() {
   const [controller, dispatch] = useMaterialUIController();
   const { darkMode, openConfigurator} = controller;
@@ -75,7 +77,8 @@ function HomePage() {
         
       </MDBox>
       <MDBox p={2}>
-        <Grid container spacing={6}>
+        <ProductList spcaing={3} xs={12} md={6} xl={4} />
+        {/* <Grid container spacing={6}>
           <Grid item xs={12} md={6} xl={3}>
             <DefaultProjectCard
               image={homeDecor1}
@@ -166,7 +169,7 @@ function HomePage() {
               price="$1000"
             />
           </Grid>
-        </Grid>
+        </Grid> */}
       </MDBox>
       {/* <MDBox py={3}>
         <Grid container spacing={3}>
