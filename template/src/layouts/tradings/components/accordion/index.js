@@ -19,7 +19,7 @@ function AccordionUsage({title, children}) {
   const { darkMode } = controller;
   const textColor = darkMode ? "#ffffff" : "#000000";
   return (
-      <Accordion defaultExpanded sx={(theme) => ({
+      <Accordion sx={(theme) => ({
             width: "100%",
             background: (darkMode) ? theme.palette.background.card : "white",
             color: textColor,

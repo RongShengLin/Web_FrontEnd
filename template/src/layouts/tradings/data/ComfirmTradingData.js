@@ -20,6 +20,7 @@ import Icon from "@mui/material/Icon";
 import CardMedia from "@mui/material/CardMedia";
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -37,6 +38,7 @@ import logoInvesion from "assets/images/small-logos/logo-invision.svg";
 import team2 from "assets/images/team-2.jpg";
 import homeDecor1 from "assets/images/home-decor-1.jpg";
 import { Description } from "@mui/icons-material";
+import MDButton from "components/MDButton";
 
 export default function data() {
   const Author = ({ image, name, email }) => (
@@ -84,7 +86,9 @@ export default function data() {
       { Header: "Product", accessor: "Product", width: "30%", align: "left" },
       { Header: "Name", accessor: "Name", align: "left" },
       { Header: "Price", accessor: "Price", align: "center" },
+      { Header: "Number", accessor: "number", align: "center" },
       { Header: "Trader", accessor: "Trader", align: "center" },
+      { Header: "Send", accessor: "Send", align: "center" },
       { Header: "Receive Product", accessor: "Receive", align: "center" },
     ],
 
@@ -101,16 +105,152 @@ export default function data() {
             $10000
           </MDTypography>
         ),
+        number: (
+          <MDTypography variant="h5" color="text" fontWeight="medium">
+            10
+          </MDTypography>
+        ),
         Trader: <Author image={team2} name="John Michael" email="john@creative-tim.com" />,
+        Send: (
+          <MDTypography variant="h5" color="success" fontWeight="medium">
+            <Icon>done</Icon>
+            Send
+          </MDTypography>
+        ),
         Receive: (
-          <FormControlLabel
-          control={<Checkbox color="success" />}
-          label={
-            <MDTypography variant="h6" color="success" fontWeight="medium">
-              Received
+          <MDButton variant="contained" color="primary" size="small">
+            <MDTypography variant="h6" fontWeight="medium" color="white"> 
+              Comfirm
             </MDTypography>
-          }
-        />
+          </MDButton>
+        ),
+      },
+      {
+        Product: <Product image={homeDecor1} name="Asana" />,
+        Name: (
+          <MDTypography variant="h5" color="text" fontWeight="medium">
+            Item Name
+          </MDTypography>
+        ),
+        Price: (
+          <MDTypography variant="h5" color="error" fontWeight="medium">
+            $10000
+          </MDTypography>
+        ),
+        number: (
+          <MDTypography variant="h5" color="text" fontWeight="medium">
+            10
+          </MDTypography>
+        ),
+        Trader: <Author image={team2} name="John Michael" email="john@creative-tim.com" />,
+        Send: (
+          <MDTypography variant="h5" color="success" fontWeight="medium">
+            <Icon>done</Icon>
+            Send
+          </MDTypography>
+        ),
+        Receive: (
+          <MDButton variant="contained" color="primary" size="small">
+            <MDTypography variant="h6" fontWeight="medium" color="white"> 
+              Comfirm
+            </MDTypography>
+          </MDButton>
+        ),
+      },
+      {
+        Product: <Product image={homeDecor1} name="Asana" />,
+        Name: (
+          <MDTypography variant="h5" color="text" fontWeight="medium">
+            Item Name
+          </MDTypography>
+        ),
+        Price: (
+          <MDTypography variant="h5" color="error" fontWeight="medium">
+            $10000
+          </MDTypography>
+        ),
+        number: (
+          <MDTypography variant="h5" color="text" fontWeight="medium">
+            10
+          </MDTypography>
+        ),
+        Trader: <Author image={team2} name="John Michael" email="john@creative-tim.com" />,
+        Send: (
+          <MDTypography variant="h5" color="success" fontWeight="medium">
+            <Icon>done</Icon>
+            Send
+          </MDTypography>
+        ),
+        Receive: (
+          <MDButton variant="contained" color="primary" size="small">
+            <MDTypography variant="h6" fontWeight="medium" color="white"> 
+              Comfirm
+            </MDTypography>
+          </MDButton>
+        ),
+      },
+      {
+        Product: <Product image={homeDecor1} name="Asana" />,
+        Name: (
+          <MDTypography variant="h5" color="text" fontWeight="medium">
+            Item Name
+          </MDTypography>
+        ),
+        Price: (
+          <MDTypography variant="h5" color="error" fontWeight="medium">
+            $10000
+          </MDTypography>
+        ),
+        number: (
+          <MDTypography variant="h5" color="text" fontWeight="medium">
+            10
+          </MDTypography>
+        ),
+        Trader: <Author image={team2} name="John Michael" email="john@creative-tim.com" />,
+        Send: (
+          <MDTypography variant="h5" color="success" fontWeight="medium">
+            <Icon>done</Icon>
+            Send
+          </MDTypography>
+        ),
+        Receive: (
+          <MDButton variant="contained" color="primary" size="small">
+            <MDTypography variant="h6" fontWeight="medium" color="white"> 
+              Comfirm
+            </MDTypography>
+          </MDButton>
+        ),
+      },
+      {
+        Product: <Product image={homeDecor1} name="Asana" />,
+        Name: (
+          <MDTypography variant="h5" color="text" fontWeight="medium">
+            Item Name
+          </MDTypography>
+        ),
+        Price: (
+          <MDTypography variant="h5" color="error" fontWeight="medium">
+            $10000
+          </MDTypography>
+        ),
+        number: (
+          <MDTypography variant="h5" color="text" fontWeight="medium">
+            10
+          </MDTypography>
+        ),
+        Trader: <Author image={team2} name="John Michael" email="john@creative-tim.com" />,
+        Send: (
+          <MDTypography variant="h5" color="warning" fontWeight="medium">
+            <Icon>schedule</Icon>
+            Waiting
+          </MDTypography>
+        ),
+        Receive: (
+          <MDButton variant="contained" color="primary" size="small">
+            <MDTypography variant="h6" fontWeight="medium" color="white"> 
+              Comfirm
+            </MDTypography>
+          </MDButton>
         ),
       },
     ],

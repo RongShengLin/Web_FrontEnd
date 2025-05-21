@@ -46,6 +46,7 @@ import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Item_Page from "layouts/item_page"
 import Tradings from "layouts/tradings";
+import Item_Edit from "layouts/item_edit";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -122,6 +123,14 @@ const routes = [
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/Tradings",
     component: <Tradings />,
+  },
+  {
+    type: "collapse",
+    name: "Item_Edit",
+    key: "Item_Edit",
+    icon: <Icon fontSize="small">edit</Icon>,
+    route: "/Item_Edit",
+    component: <Item_Edit />,
   },
 ];
 

@@ -18,13 +18,15 @@ import PropTypes from "prop-types";
 
 // @mui material components
 import Icon from "@mui/material/Icon";
+import Box from "@mui/material/Box";
+
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 
-function Transaction({ color, icon, name, description, value }) {
+function Transaction({ color, icon, name, number, value }) {
   return (
     <MDBox key={name} component="li" py={1} pr={2} mb={1}>
       <MDBox display="flex" justifyContent="space-between" alignItems="center">
@@ -34,15 +36,22 @@ function Transaction({ color, icon, name, description, value }) {
               <Icon sx={{ fontWeight: "bold" }}>{icon}</Icon>
             </MDButton>
           </MDBox>
-          <MDBox display="flex" flexDirection="column">
+          <MDBox mr={2}>
             <MDTypography variant="button" fontWeight="medium" gutterBottom>
               {name}
             </MDTypography>
-            <MDTypography variant="caption" color="text" fontWeight="regular">
-              {description}
+          </MDBox>
+          <MDBox mr={2}>
+            <MDTypography variant="button" fontWeight="medium" gutterBottom>
+              x{number}
             </MDTypography>
           </MDBox>
         </MDBox>
+        <Box
+          flexGrow={1}
+          borderBottom="1px dashed gray"
+          mx={2}
+        />
         <MDTypography variant="button" color={color} fontWeight="medium" textGradient>
           {value}
         </MDTypography>
@@ -65,7 +74,7 @@ Transaction.propTypes = {
   ]).isRequired,
   icon: PropTypes.node.isRequired,
   name: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
 };
 

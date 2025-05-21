@@ -33,21 +33,27 @@ import DataTable from "examples/Tables/DataTable";
 
 // Data
 import authorsTableData from "layouts/tradings/data/traderTableData";
-import ComfirmTradingData from "layouts/tradings/data/ComfirmTradingData";
+import QueueTradingData from "layouts/tradings/data/ComfirmTradingData";
+import AwaitTradingData from "layouts/tradings/data/AwaitTradingData";
+import ApprovalTradingData from "layouts/tradings/data/ApprovalTradingData";
+import HistoryTradingData from "layouts/tradings/data/HistoryTradingData";
 import AccordionUsage from "./components/accordion";
 
 function Tradings() {
   const { columns, rows } = authorsTableData();
-  const { columns: pColumns, rows: pRows } = ComfirmTradingData();
+  const { columns: QueueColumns, rows: QueueRows } = QueueTradingData();
+  const { columns: AwaitColumns, rows: AwaitRows } = AwaitTradingData();
+  const { columns: ApprovalColumns, rows: ApprovalRows } = ApprovalTradingData();
+  const { columns: HistoryColumns, rows: HistoryRows } = HistoryTradingData();
   return (
     <HomePageLayout>
       <HomePageNavbar />
       <MDBox pt={6} pb={3}>
-        <Grid container spacing={6}>
+        <Grid container spacing={1}>
           <Grid item xs={12}>
-            <AccordionUsage title={"Comfired Tradings"}>
+            <AccordionUsage title={"Trade Queue"}>
               <DataTable
-                table={{ columns: pColumns, rows: pRows }}
+                table={{ columns: QueueColumns, rows: QueueRows }}
                 isSorted={false}
                 entriesPerPage={false}
                 showTotalEntries={false}
@@ -56,7 +62,37 @@ function Tradings() {
             </AccordionUsage>
           </Grid>
           <Grid item xs={12}>
-            
+             <AccordionUsage title={"Self Approval"}>
+              <DataTable
+                table={{ columns: ApprovalColumns, rows: ApprovalRows }}
+                isSorted={false}
+                entriesPerPage={false}
+                showTotalEntries={false}
+                noEndBorder
+              />
+            </AccordionUsage>
+          </Grid>
+          <Grid item xs={12}>
+             <AccordionUsage title={"Await Confirm"}>
+              <DataTable
+                table={{ columns: AwaitColumns, rows: AwaitRows }}
+                isSorted={false}
+                entriesPerPage={false}
+                showTotalEntries={false}
+                noEndBorder
+              />
+            </AccordionUsage>
+          </Grid>
+          <Grid item xs={12}>
+             <AccordionUsage title={"Trade History"}>
+              <DataTable
+                table={{ columns: HistoryColumns, rows: HistoryRows }}
+                isSorted={false}
+                entriesPerPage={false}
+                showTotalEntries={false}
+                noEndBorder
+              />
+            </AccordionUsage>
           </Grid>
         </Grid>
       </MDBox>
