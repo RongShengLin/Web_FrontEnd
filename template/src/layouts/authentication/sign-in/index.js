@@ -41,7 +41,10 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 // Images
 import bgImage from "assets/images/ntu_sign.jpg";
 
+import Login from "./api.js";
+
 function Basic() {
+  return <Login />;
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);

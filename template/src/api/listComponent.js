@@ -9,7 +9,7 @@ import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
 
 const API_PREFIX = "/api/auctions";
 
-function ProductList({spcaing = 3, xs = 12, md = 6, xl = 3 }) {
+function ProductList({spacing = 3, xs = 12, md = 6, xl = 3, keyword, filters }) {
     const [products, setProducts] = useState([]);
     const [editing, setEditing] = useState(false);
     const [formData, setFormData] = useState({
@@ -44,8 +44,11 @@ function ProductList({spcaing = 3, xs = 12, md = 6, xl = 3 }) {
         return () => clearInterval(interval); // 卸載時清掉定時器
     }, []);
 
+    // console.log("filters:", filters);
+    // console.log("keyword:", keyword);
+
     return (
-    <Grid container spacing={spcaing}>
+    <Grid container spacing={spacing}>
     {products.map((product) => (
         <Grid item xs={xs} md={md} xl={xl} key={product.product_id}>
         <DefaultProjectCard
@@ -56,9 +59,10 @@ function ProductList({spcaing = 3, xs = 12, md = 6, xl = 3 }) {
             price={`$${product.price}`}
             action={{
             type: "internal",
-            route: `/product/${product.product_id}`,
+            route: `/item/${product.product_id}`,
             color: "primary",
             label: "查看商品",
+            iconOnly: false,
             }}
         />
         </Grid>
@@ -68,10 +72,15 @@ function ProductList({spcaing = 3, xs = 12, md = 6, xl = 3 }) {
 }
 
 ProductList.propTypes = {
-    spcaing: PropTypes.number,
+    spacing: PropTypes.number,
     xs: PropTypes.number,
     md: PropTypes.number,
     xl: PropTypes.number,
+    keyword: PropTypes.string,         
+    filters: PropTypes.shape({
+        price: PropTypes.arrayOf(PropTypes.number),
+        categories: PropTypes.arrayOf(PropTypes.string),
+    }),
 };
 
 export default ProductList;

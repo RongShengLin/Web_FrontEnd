@@ -32,7 +32,10 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 // Images
 import bgImage from "assets/images/ntu.jpg";
 
+import Register from "./api.js";
+
 function Cover() {
+  return <Register />;
   return (
     <CoverLayout image={bgImage}>
       <Card>

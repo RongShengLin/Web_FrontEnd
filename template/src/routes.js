@@ -45,6 +45,7 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Item_Page from "layouts/item_page"
+import Item_Page_ID from "layouts/item_page/api.js";
 import Tradings from "layouts/tradings";
 
 // @mui icons
@@ -122,6 +123,12 @@ const routes = [
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/Tradings",
     component: <Tradings />,
+  },
+  {
+    type: "route",
+    key: "item-dynamic",
+    route: "/item/:id",
+    component: <Item_Page_ID />,
   },
 ];
 
