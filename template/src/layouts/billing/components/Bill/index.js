@@ -27,10 +27,9 @@ import MDButton from "components/MDButton";
 
 // Material Dashboard 2 React context
 import { useMaterialUIController } from "context";
-import homeDecor1 from "assets/images/home-decor-1.jpg";
 import { Grid } from "@mui/material";
 
-function Bill({ name, price, number_items, noGutter }) {
+function Bill({ image, name, price, number_items, noGutter }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
 
@@ -48,7 +47,7 @@ function Bill({ name, price, number_items, noGutter }) {
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
           <CardMedia
-            src={homeDecor1}
+            src={image}
             component="img"
             title={name}
             sx={{
@@ -114,6 +113,7 @@ Bill.defaultProps = {
 
 // Typechecking props for the Bill
 Bill.propTypes = {
+  image: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   name: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
   number_items: PropTypes.string.isRequired,

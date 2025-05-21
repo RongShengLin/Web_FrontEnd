@@ -45,6 +45,7 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Item_Page from "layouts/item_page"
+import Tradings from "layouts/tradings";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -60,27 +61,19 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
+    name: "Following",
+    key: "following",
+    icon: <Icon fontSize="small">favorite</Icon>,
+    route: "/following",
     component: <Tables />,
   },
   {
     type: "collapse",
     name: "Billing",
     key: "billing",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
+    icon: <Icon fontSize="small">paid</Icon>,
     route: "/billing",
     component: <Billing />,
-  },
-  {
-    type: "collapse",
-    name: "RTL",
-    key: "rtl",
-    icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
-    route: "/rtl",
-    component: <RTL />,
   },
   {
     type: "collapse",
@@ -121,6 +114,14 @@ const routes = [
     icon: <Icon fontSize="small">shopping_cart</Icon>,
     route: "/ItemPage",
     component: <Item_Page />,
+  },
+  {
+    type: "collapse",
+    name: "Tradings",
+    key: "Tradings",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/Tradings",
+    component: <Tradings />,
   },
 ];
 

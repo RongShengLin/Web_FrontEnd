@@ -22,6 +22,8 @@ import MDTypography from "components/MDTypography";
 
 // Billing page components
 import Bill from "layouts/billing/components/Bill";
+import homeDecor1 from "assets/images/home-decor-1.jpg";
+
 
 function BillingInformation() {
   return (
@@ -33,9 +35,9 @@ function BillingInformation() {
       </MDBox>
       <MDBox pt={1} pb={2} px={2}>
         <MDBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
-          <Bill name="item name" price="$1000" number_items="1" />
-          <Bill name="item name" price="$1000" number_items="1" />
-          <Bill name="item name" price="$1000" number_items="1" />
+          <Bill image={homeDecor1} name="item name" price="$1000" number_items="1" />
+          <Bill image={homeDecor1} name="item name" price="$1000" number_items="1" />
+          <Bill image={homeDecor1} name="item name" price="$1000" number_items="1" />
         </MDBox>
       </MDBox>
     </Card>

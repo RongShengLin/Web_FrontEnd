@@ -21,46 +21,24 @@ import PropTypes from "prop-types";
 
 // @mui material components
 import Card from "@mui/material/Card";
+import Icon from "@mui/material/Icon";
+import CardMedia from "@mui/material/CardMedia";
+import { Grid } from "@mui/material";
+
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
 import MDButton from "components/MDButton";
+import { useMaterialUIController } from "context";
+import Bill from "layouts/billing/components/Bill";
 
 function ProfilesList({ title, profiles, shadow }) {
-  const renderProfiles = profiles.map(({ image, name, description, action }) => (
-    <MDBox key={name} component="li" display="flex" alignItems="center" py={1} mb={1}>
-      <MDBox mr={2}>
-        <MDAvatar src={image} alt="something here" shadow="md" />
-      </MDBox>
-      <MDBox display="flex" flexDirection="column" alignItems="flex-start" justifyContent="center">
-        <MDTypography variant="button" fontWeight="medium">
-          {name}
-        </MDTypography>
-        <MDTypography variant="caption" color="text">
-          {description}
-        </MDTypography>
-      </MDBox>
-      <MDBox ml="auto">
-        {action.type === "internal" ? (
-          <MDButton component={Link} to={action.route} variant="text" color="info">
-            {action.label}
-          </MDButton>
-        ) : (
-          <MDButton
-            component="a"
-            href={action.route}
-            target="_blank"
-            rel="noreferrer"
-            variant="text"
-            color={action.color}
-          >
-            {action.label}
-          </MDButton>
-        )}
-      </MDBox>
-    </MDBox>
+  const [controller] = useMaterialUIController();
+  const { darkMode } = controller;
+  const renderProfiles = profiles.map(({ image, name, price, num_item}) => (
+    <Bill key={name || index} image={image} name={name} price={price} number_items={num_item} />
   ));
 
   return (

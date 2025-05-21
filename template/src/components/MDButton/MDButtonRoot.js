@@ -29,14 +29,12 @@ export default styled(Button)(({ theme, ownerState }) => {
 
   // styles for the button with variant="contained"
   const containedStyles = () => {
-    // background color value
-    const backgroundValue = palette[color] ? palette[color].main : white.main;
-
-    // backgroundColor value when button is focused
+    const backgroundValue = palette[color] ? palette[color].main : transparent.main;
+      // backgroundColor value when button is focused
     const focusedBackgroundValue = palette[color] ? palette[color].focus : white.focus;
 
     // boxShadow value
-    const boxShadowValue = colored[color]
+    const boxShadowValue = (colored[color] && !(color === "transparent"))
       ? `${boxShadow([0, 3], [3, 0], palette[color].main, 0.15)}, ${boxShadow(
           [0, 3],
           [1, -2],
@@ -46,7 +44,7 @@ export default styled(Button)(({ theme, ownerState }) => {
       : "none";
 
     // boxShadow value when button is hovered
-    const hoveredBoxShadowValue = colored[color]
+    const hoveredBoxShadowValue = (colored[color] && !(color === "transparent"))
       ? `${boxShadow([0, 14], [26, -12], palette[color].main, 0.4)}, ${boxShadow(
           [0, 4],
           [23, 0],
@@ -85,7 +83,7 @@ export default styled(Button)(({ theme, ownerState }) => {
 
       "&:focus:not(:hover)": {
         backgroundColor: focusedBackgroundValue,
-        boxShadow: palette[color]
+        boxShadow: (palette[color] && !(color === "transparent"))
           ? boxShadow([0, 0], [0, 3.2], palette[color].main, 0.5)
           : boxShadow([0, 0], [0, 3.2], white.main, 0.5),
       },

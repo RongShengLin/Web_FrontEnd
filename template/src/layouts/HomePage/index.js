@@ -16,10 +16,11 @@ Coded by www.creative-tim.com
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Pagination from '@mui/material/Pagination';
+import IconButton from "@mui/material/IconButton";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-import { useMaterialUIController } from "context";
+import { useMaterialUIController, setOpenConfigurator} from "context";
 
 // Material Dashboard 2 React example components
 import HomePageLayout from "examples/LayoutContainers/HomePageLayout";
@@ -30,6 +31,7 @@ import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
 import BannerCarousel from "examples/BannerCarousel"
+import MDInput from "components/MDInput";
 
 // Data
 import reportsBarChartData from "layouts/HomePage/data/reportsBarChartData";
@@ -45,20 +47,32 @@ import team2 from "assets/images/team-2.jpg";
 import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
 import { dark } from "@mui/material/styles/createPalette";
+import { Icon } from "@mui/material";
 
 function HomePage() {
-  const [controller] = useMaterialUIController();
-  const { darkMode } = controller;
+  const [controller, dispatch] = useMaterialUIController();
+  const { darkMode, openConfigurator} = controller;
   const { sales, tasks } = reportsLineChartData;
   console.log(darkMode);
   const textColor = darkMode ? "#ffffff" : "#000000";
   console.log(textColor);
-
+  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   return (
     <HomePageLayout>
       <HomePageNavbar />
       <MDBox p={2}>
         <BannerCarousel />
+      </MDBox>
+      <MDBox p={2} display="flex" justifyContent="flex-end" alignItems="flex-end">
+        <MDInput label="Search here" />
+        <IconButton
+          disableRipple
+          color="inherit"
+          onClick={handleConfiguratorOpen}
+        >
+          <Icon fontSize="large">sort</Icon>
+        </IconButton>
+        
       </MDBox>
       <MDBox p={2}>
         <Grid container spacing={6}>

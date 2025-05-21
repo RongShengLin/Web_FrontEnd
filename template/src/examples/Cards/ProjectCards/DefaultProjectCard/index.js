@@ -23,6 +23,8 @@ import PropTypes from "prop-types";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Tooltip from "@mui/material/Tooltip";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -111,11 +113,14 @@ function DefaultProjectCard({ image, label, title, description, action, price })
               {action.label}
             </MDButton>
           )}
-          <MDBox display="flex">
-            <MDTypography variant="h5" fontWeight="light" color="text">
+          <MDBox display="flex" alignItems="center" gap={2} ml="auto">
+            <MDTypography variant="h4" fontWeight="light" color="error">
               {price}
             </MDTypography>
           </MDBox>
+          <MDButton circular="true" iconOnly='true' color="transparent" variant="contained">
+            <FavoriteBorderIcon sx={(theme) => ({ color: "primary.main"})}/>
+          </MDButton>
         </MDBox>
       </MDBox>
     </Card>

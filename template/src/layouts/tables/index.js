@@ -16,6 +16,10 @@ Coded by www.creative-tim.com
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
+import Pagination from '@mui/material/Pagination';
+import PaginationItem from "@mui/material/PaginationItem";
+import PropTypes from "prop-types";
+
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -28,13 +32,12 @@ import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 
 // Data
-import authorsTableData from "layouts/tables/data/authorsTableData";
-import projectsTableData from "layouts/tables/data/projectsTableData";
+import authorsTableData from "layouts/tables/data/traderTableData";
+import projectsTableData from "layouts/tables/data/ProductTableData";
 
 function Tables() {
   const { columns, rows } = authorsTableData();
   const { columns: pColumns, rows: pRows } = projectsTableData();
-
   return (
     <HomePageLayout>
       <HomePageNavbar />
@@ -48,12 +51,12 @@ function Tables() {
                 py={3}
                 px={2}
                 variant="gradient"
-                bgColor="info"
+                bgColor="primary"
                 borderRadius="lg"
-                coloredShadow="info"
+                coloredShadow="primary"
               >
                 <MDTypography variant="h6" color="white">
-                  Authors Table
+                  Following Trader
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
@@ -65,6 +68,21 @@ function Tables() {
                   noEndBorder
                 />
               </MDBox>
+              <Grid container spacing={3} justifyContent="center">
+                <Grid item>
+                  <MDBox mb={1} mt={1}>
+                    <Pagination count={10} sx={(theme) => ({
+                      '& .MuiPaginationItem-root': {
+                        color: theme.palette.text.main,
+                      },
+                      '& .Mui-selected': {
+                        backgroundColor: theme.palette.primary.main,
+                        color: theme.palette.text.main,
+                      },
+                    })}  showFirstButton showLastButton />
+                  </MDBox>
+                </Grid>
+              </Grid>
             </Card>
           </Grid>
           <Grid item xs={12}>
@@ -75,12 +93,12 @@ function Tables() {
                 py={3}
                 px={2}
                 variant="gradient"
-                bgColor="info"
+                bgColor="primary"
                 borderRadius="lg"
-                coloredShadow="info"
+                coloredShadow="primary"
               >
                 <MDTypography variant="h6" color="white">
-                  Projects Table
+                  Following Product
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
@@ -92,6 +110,21 @@ function Tables() {
                   noEndBorder
                 />
               </MDBox>
+              <Grid container spacing={3} justifyContent="center">
+                <Grid item>
+                  <MDBox mb={1} mt={1}>
+                    <Pagination count={10} sx={(theme) => ({
+                      '& .MuiPaginationItem-root': {
+                        color: theme.palette.text.main,
+                      },
+                      '& .Mui-selected': {
+                        backgroundColor: theme.palette.primary.main,
+                        color: theme.palette.text.main,
+                      },
+                    })}  showFirstButton showLastButton />
+                  </MDBox>
+                </Grid>
+              </Grid>
             </Card>
           </Grid>
         </Grid>
@@ -100,5 +133,4 @@ function Tables() {
     </HomePageLayout>
   );
 }
-
 export default Tables;
