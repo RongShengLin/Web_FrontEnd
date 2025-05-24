@@ -48,6 +48,7 @@ import Item_Page from "layouts/item_page"
 import Item_Page_ID from "layouts/item_page/api.js";
 import Tradings from "layouts/tradings";
 import Item_Edit from "layouts/item_edit";
+import Edit_profile from "layouts/edit_profile"
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -90,6 +91,14 @@ const routes = [
     icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
     component: <Profile />,
+  },
+  {
+    type: "collapse",
+    name: "Edit_Profile",
+    key: "edit_profile",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/edit_profile",
+    component: <Edit_profile />,
   },
   {
     type: "route",

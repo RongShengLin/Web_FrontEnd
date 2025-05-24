@@ -30,12 +30,12 @@ import MDTypography from "components/MDTypography";
 import HomePageLayout from "examples/LayoutContainers/HomePageLayout";
 import HomePageNavbar from "examples/Navbars/HomePageNavbar";
 import Footer from "examples/Footer";
-import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
+import ProfileInfoCard from "examples/Cards/InfoCards/EditProfileInfoCard";
 import ProfilesList from "examples/Lists/ProfilesList";
 import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
 
 // Overview page components
-import Header from "layouts/profile/components/Header";
+import Header from "layouts/edit_profile/components/Header";
 import PlatformSettings from "layouts/profile/components/PlatformSettings";
 
 // Data
@@ -50,29 +50,18 @@ function Overview() {
       <MDBox mb={2} />
       <Header>
         <MDBox mt={5} mb={3}>
-          <Grid container spacing={1}>
-            {/* <Grid item xs={12} md={6} xl={4}>
-              <PlatformSettings />
-            </Grid> */}
-            <Grid item xs={12} md={6} xl={4} sx={{ display: "flex" }}>
-              <ProfileInfoCard
-                title="profile information"
-                description="A NTU student Who love LOL and B4B."
-                info={{
-                  studentID: "r13922000",
-                  mobile: "0900-000-000",
-                  email: "DaiKai7414@gmail.com",
-                  tradingLocation: "Front Gate",
-                }}
-                shadow={false}
-                action={{ route: "", tooltip: "Edit Profile" }}
-              />
-              <Divider orientation="vertical" display="inline-box" sx={{ mx: 2 }} />
-            </Grid>
-            <Grid item xs={12} xl={8}>
-              <ProfilesList title="product" profiles={profilesListData} shadow={false} />
-            </Grid>
-          </Grid>
+          <ProfileInfoCard
+            name="DaiKai Zhu" 
+            title="profile information"
+            description="A NTU student Who love LOL and B4B."
+            info={{
+              studentID: "r13922000",
+              mobile: "0900-000-000",
+              email: "DaiKai7414@gmail.com",
+              tradingLocation: "Front Gate",
+            }}
+            shadow={false}
+          />
         </MDBox>
       </Header>
       <Footer />

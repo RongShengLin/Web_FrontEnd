@@ -123,6 +123,12 @@ function Register() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </MDBox>
+            <MDBox mb={2}>
+              <MDTypography variant="button">
+                Upload Your Student ID card
+              </MDTypography>
+              <MDInput type="file" accept="image/*" />
+            </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Checkbox
                 checked={agree}

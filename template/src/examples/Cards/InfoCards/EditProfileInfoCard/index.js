@@ -28,12 +28,14 @@ import Icon from "@mui/material/Icon";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
+import MDInput from "components/MDInput";
+import MDButton from "components/MDButton";
 
 // Material Dashboard 2 React base styles
 import colors from "assets/theme/base/colors";
 import typography from "assets/theme/base/typography";
 
-function ProfileInfoCard({ title, description, info, action, shadow }) {
+function ProfileInfoCard({ name, title, description, info, shadow }) {
   const labels = [];
   const values = [];
   const { socialMediaColors } = colors;
@@ -56,63 +58,53 @@ function ProfileInfoCard({ title, description, info, action, shadow }) {
 
   // Render the card info items
   const renderItems = labels.map((label, key) => (
-    <MDBox key={label} display="flex" py={1} pr={2}>
+    <MDBox key={label} display="flex" py={1} pr={2} alignItems="center">
       <MDTypography variant="button" fontWeight="bold" textTransform="capitalize">
         {label}: &nbsp;
       </MDTypography>
-      <MDTypography variant="button" fontWeight="regular" color="text">
-        &nbsp;{values[key]}
-      </MDTypography>
+      <MDInput label={label} placeholder={label} defaultValue={values[key]}/>
     </MDBox>
   ));
 
-  // Render the card social media icons
-  // const renderSocial = social.map(({ link, icon, color }) => (
-  //   <MDBox
-  //     key={color}
-  //     component="a"
-  //     href={link}
-  //     target="_blank"
-  //     rel="noreferrer"
-  //     fontSize={size.lg}
-  //     color={socialMediaColors[color].main}
-  //     pr={1}
-  //     pl={0.5}
-  //     lineHeight={1}
-  //   >
-  //     {icon}
-  //   </MDBox>
-  // ));
-
   return (
     <Card sx={{width:"100%", height: "100%", boxShadow: !shadow && "none" }}>
+      <MDBox display="flex" alignItems="center" pt={2} px={2} gap={2}>
+        <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
+          Name
+        </MDTypography>
+        <MDInput label="User Name" placeholder={"User Name"} defaultValue={name}/>
+      </MDBox>
+      <MDBox display="flex" alignItems="center" pt={2} px={2} gap={2}>
+        <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
+          Profile Image
+        </MDTypography>
+        <MDInput type="file" accept="image/*" />
+      </MDBox>
       <MDBox display="flex" justifyContent="space-between" alignItems="center" pt={2} px={2}>
         <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
           {title}
         </MDTypography>
-        <MDTypography component={Link} to={action.route} variant="body2" color="secondary">
-          <Tooltip title={action.tooltip} placement="top">
-            <Icon>edit</Icon>
-          </Tooltip>
-        </MDTypography>
       </MDBox>
       <MDBox p={2}>
         <MDBox mb={2} lineHeight={1}>
-          <MDTypography variant="button" color="text" fontWeight="light">
-            {description}
-          </MDTypography>
+          <MDInput label="Description" multiline rows={4} placeholder="Description" defaultValue={description} fullWidth/>
         </MDBox>
         <MDBox opacity={0.3}>
           <Divider />
         </MDBox>
         <MDBox>
           {renderItems}
-          {/* <MDBox display="flex" py={1} pr={2}>
-            <MDTypography variant="button" fontWeight="bold" textTransform="capitalize">
-              Contact: &nbsp;
-            </MDTypography>
-            {renderSocial}
-          </MDBox> */}
+        </MDBox>
+        <MDBox
+            height="100px"
+            position="relative"
+        >
+            <MDBox position="absolute" bottom={0} right={0} p={2}>
+                <MDBox display="flex" gap={2}>
+                    <MDButton color="success">Comfirm</MDButton>
+                    <MDButton color="error">Cancel</MDButton>
+                </MDBox>
+            </MDBox>
         </MDBox>
       </MDBox>
     </Card>
@@ -126,13 +118,10 @@ ProfileInfoCard.defaultProps = {
 
 // Typechecking props for the ProfileInfoCard
 ProfileInfoCard.propTypes = {
+  name: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   info: PropTypes.objectOf(PropTypes.string).isRequired,
-  action: PropTypes.shape({
-    route: PropTypes.string.isRequired,
-    tooltip: PropTypes.string.isRequired,
-  }).isRequired,
   shadow: PropTypes.bool,
 };
 

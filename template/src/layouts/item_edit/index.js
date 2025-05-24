@@ -229,12 +229,12 @@ function Item_Edit() {
                             height="100px"
                             position="relative"
                         >
-                        <MDBox position="absolute" bottom={0} right={0} p={2}>
-                            <MDBox display="flex" gap={2}>
-                            <MDButton color="success">Comfirm</MDButton>
-                            <MDButton color="error">Cancel</MDButton>
+                            <MDBox position="absolute" bottom={0} right={0} p={2}>
+                                <MDBox display="flex" gap={2}>
+                                    <MDButton color="success">Comfirm</MDButton>
+                                    <MDButton color="error">Cancel</MDButton>
+                                </MDBox>
                             </MDBox>
-                        </MDBox>
                         </MDBox>
                     </MDBox>
                 </Grid>
