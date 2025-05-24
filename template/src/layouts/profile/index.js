@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
@@ -41,14 +26,45 @@ import PlatformSettings from "layouts/profile/components/PlatformSettings";
 // Data
 import profilesListData from "layouts/profile/data/profilesListData";
 
+import { useState, useEffect } from "react";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Avatar } from "@mui/material";
+import { BASE_URL } from "api/setting";
 
 
 function Overview() {
+  const [profile, setProfile] = useState({
+    name: "",
+    email: "",
+    student_id: "",
+    phone_number: "",
+    trading_location: "",
+    head_image: "",
+  });
+
+  // const navigate = useNavigate();
+
+  const loadProfile = async () => {
+    const name = sessionStorage.getItem("username") || localStorage.getItem("username");
+    console.log("loadProfile", name);
+    if (name) {
+      const res = await fetch(`${BASE_URL}/api/user/?name=${name}`, {
+        method: "GET",
+        credentials: "include", 
+      });
+      const data = await res.json();
+      setProfile(data);
+    }
+  };
+
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
   return (
     <HomePageLayout>
       <HomePageNavbar />
       <MDBox mb={2} />
-      <Header>
+      <Header headImage={profile.head_image}>
         <MDBox mt={5} mb={3}>
           <Grid container spacing={1}>
             {/* <Grid item xs={12} md={6} xl={4}>
@@ -56,22 +72,26 @@ function Overview() {
             </Grid> */}
             <Grid item xs={12} md={6} xl={4} sx={{ display: "flex" }}>
               <ProfileInfoCard
-                title="profile information"
-                description="A NTU student Who love LOL and B4B."
+                title="Profile Information"
+                description="A NTU student who loves LOL and B4B."
                 info={{
-                  studentID: "r13922000",
-                  mobile: "0900-000-000",
-                  email: "DaiKai7414@gmail.com",
-                  tradingLocation: "Front Gate",
+                  studentID: profile.student_id,
+                  mobile: profile.phone_number,
+                  email: profile.email,
+                  tradingLocation: profile.first_position,
                 }}
+                action={{ route: "/edit_profile", tooltip: "Edit Profile"}}
                 shadow={false}
-                action={{ route: "", tooltip: "Edit Profile" }}
               />
               <Divider orientation="vertical" display="inline-box" sx={{ mx: 2 }} />
             </Grid>
             <Grid item xs={12} xl={8}>
               <ProfilesList title="product" profiles={profilesListData} shadow={false} />
             </Grid>
+            <MDBox mt={2}>
+              <MDTypography variant="h6">頭像預覽：</MDTypography>
+              <Avatar src={`/static/images/${profile.head_image}`} alt="head" sx={{ width: 100, height: 100 }} />
+            </MDBox>
           </Grid>
         </MDBox>
       </Header>

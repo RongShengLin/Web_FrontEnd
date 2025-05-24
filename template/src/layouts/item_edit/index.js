@@ -66,21 +66,76 @@ import { dark } from "@mui/material/styles/createPalette";
 import { maxHeight, minHeight } from "@mui/system";
 import theme from "assets/theme";
 import MDInput from "components/MDInput";
+import { useParams } from "react-router-dom";
 
 function Item_Edit() {
-  const [controller] = useMaterialUIController();
-  const { darkMode } = controller;
-  const { sales, tasks } = reportsLineChartData;
-  console.log(darkMode);
-  const [categories, setCategories] = useState([]);
-  const textColor = darkMode ? "#ffffff" : "#000000";
-  console.log(textColor);
-  const categoryGroups = {
-    "3C": ["Phone", "Laptop", "Screen"],
-    "Tool": ["Hammer", "Screwdriver"],
-    "Accessories": ["Bag", "Ring", "Necklace"],
-    "Others": ["Camera", "TV"],
-  };
+    const [product, setProduct] = useState({
+        name: "",
+        price: "",
+        description: "",
+        number: 1,
+        trading_place: "",
+        product_type: "",
+    });
+    const [controller] = useMaterialUIController();
+    const { darkMode } = controller;
+    const { sales, tasks } = reportsLineChartData;
+    console.log(darkMode);
+    const [categories, setCategories] = useState([]);
+    const textColor = darkMode ? "#ffffff" : "#000000";
+    console.log(textColor);
+    const { id } = useParams(); 
+    const categoryGroups = {
+        "3C": ["Phone", "Laptop", "Screen"],
+        "Tool": ["Hammer", "Screwdriver"],
+        "Accessories": ["Bag", "Ring", "Necklace"],
+        "Others": ["Camera", "TV"],
+    };
+
+  useEffect(() => {
+    if (id) {
+        fetch(`${BASE_URL}/api/auctions/${id}/`, {
+        method: "GET",
+        credentials: "include",
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            setProduct({
+                name: data.product_name,
+                price: data.price,
+                description: data.description || "",
+                number: 1,
+                trading_place: data.position,
+                product_type: data.product_type,
+            });
+        });
+    }
+    }, [id]);
+
+    const handleSubmit = async () => {
+        const payload = {
+            product_name: product.name,
+            price: product.price,
+            position: product.trading_place,
+            product_type: product.product_type,
+            picture_url: "https://yourdomain.com/image.jpg",  // 後續可接上傳圖功能
+            owner_email: sessionStorage.getItem("email"),
+        };
+
+        const method = id ? "PUT" : "POST";
+        const url = id
+            ? `${BASE_URL}/api/auctions/${id}/`
+            : `${BASE_URL}/api/auctions/`;
+
+        await fetch(url, {
+            method,
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(payload),
+        });
+
+        alert(id ? "商品已更新" : "商品已新增");
+    };
 
   const handleCategoryChange = (event) => {
     const { name, checked } = event.target;
@@ -125,13 +180,23 @@ function Item_Edit() {
                             <MDTypography variant="h4" fontWeight="bold" textTransform="capitalize">
                                 Product Name:
                             </MDTypography>
-                            <MDInput label="Product Name" placeholder={"Product_name"} />
+                             <MDInput
+                                name="name"
+                                value={product.name}
+                                onChange={(e) => setProduct({ ...product, [e.target.name]: e.target.value })}
+                                placeholder="Product Name"
+                            />
                         </MDBox>
                         <MDBox display="flex" alignItems="center" gap={1} mb={2}>
                             <MDTypography variant="h4" fontWeight="bold" sx={{ color: "red" }}>
                                 Price:
                             </MDTypography>
-                            <MDInput label="Price" placeholder={"Price"} />
+                            <MDInput
+                                name="price"
+                                value={product.price}
+                                onChange={(e) => setProduct({ ...product, [e.target.name]: e.target.value })}
+                                placeholder="Price"
+                            />
                         </MDBox>
                         <MDBox display="flex" alignItems="center" gap={1} mb={2}>
                             <MDTypography variant="h4" fontWeight="medium">
@@ -139,13 +204,27 @@ function Item_Edit() {
                             </MDTypography>
                         </MDBox>
                         <MDBox mr={1} mb={2}>
-                            <MDInput label="Description" multiline rows={4} placeholder={"Description"} fullWidth/>
+                            <MDInput
+                                multiline
+                                name="description"
+                                value={product.description}
+                                onChange={(e) => setProduct({ ...product, [e.target.name]: e.target.value })}
+                                rows={4}
+                                placeholder="Description"
+                                fullWidth
+                            />
                         </MDBox>
                         <MDBox display="flex" alignItems="center" gap={1} mb={2}>
                             <MDTypography variant="h4" fontWeight="bold" textTransform="capitalize">
                                 Number:
                             </MDTypography>
                             <MDInput label="Number" placeholder={"Number"} />
+                            <MDInput
+                                name="Number"
+                                value={product.price}
+                                onChange={(e) => setProduct({ ...product, [e.target.name]: e.target.value })}
+                                placeholder="Number"
+                            />
                         </MDBox>
                         <MDBox mt={2} mb={2} mr={4} sx={{
                             maxHeight: "100px",
@@ -179,7 +258,12 @@ function Item_Edit() {
                                         },
                                         flex: "0 0 auto"
                                     }}/>
-                                    <MDInput label="Trading_place" placeholder={"Trading_Place"} />
+                                    <MDInput
+                                        name="trading_place"
+                                        value={product.trading_place}
+                                        onChange={(e) => setProduct({ ...product, [e.target.name]: e.target.value })}
+                                        placeholder="Place"
+                                    />
                                 </ListItem>
                             </List>
                         </MDBox>
@@ -231,7 +315,9 @@ function Item_Edit() {
                         >
                             <MDBox position="absolute" bottom={0} right={0} p={2}>
                                 <MDBox display="flex" gap={2}>
-                                    <MDButton color="success">Comfirm</MDButton>
+                                    <MDButton color="success" onClick={handleSubmit}>
+                                        {id ? "Update" : "Create"}
+                                    </MDButton>
                                     <MDButton color="error">Cancel</MDButton>
                                 </MDBox>
                             </MDBox>

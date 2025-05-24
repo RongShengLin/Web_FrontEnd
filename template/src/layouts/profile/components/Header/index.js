@@ -37,10 +37,16 @@ import breakpoints from "assets/theme/base/breakpoints";
 // Images
 import zombie from "assets/images/zombie.png";
 import bgImage from "assets/images/ntu.jpg";
+import { BASE_URL } from "api/setting";
 
-function Header({ children }) {
+
+function Header({ children, headImage  }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
+
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
@@ -61,6 +67,14 @@ function Header({ children }) {
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleTabsOrientation);
   }, [tabsOrientation]);
+
+  useEffect(() => {
+    const name = sessionStorage.getItem("username") || localStorage.getItem("username") || "Guest";
+    const userEmail = sessionStorage.getItem("email") || localStorage.getItem("email") || "unknown@example.com";
+    setUsername(name);
+    setEmail(userEmail);
+    setImage(`/static/images/${name}.jpg`); // 假設圖片以 username 命名並上傳
+  }, []);
 
   const handleSetTabValue = (event, newValue) => setTabValue(newValue);
 
@@ -94,15 +108,15 @@ function Header({ children }) {
       >
         <Grid container spacing={3} alignItems="center">
           <Grid item>
-            <MDAvatar src={zombie} alt="profile-image" size="xl" shadow="sm" />
+            <MDAvatar src={headImage} alt="profile-image" size="xl" shadow="sm" />
           </Grid>
           <Grid item>
             <MDBox height="100%" mt={0.5} lineHeight={1}>
               <MDTypography variant="h5" fontWeight="medium">
-                DaiKai Zhu
+                {username}
               </MDTypography>
               <MDTypography variant="button" color="text" fontWeight="regular">
-                DaiKai7414@gmail.com
+                {email}
               </MDTypography>
             </MDBox>
           </Grid>
@@ -146,11 +160,13 @@ function Header({ children }) {
 // Setting default props for the Header
 Header.defaultProps = {
   children: "",
+  headImage: "",
 };
 
 // Typechecking props for the Header
 Header.propTypes = {
   children: PropTypes.node,
+  headImage: PropTypes.string,
 };
 
 export default Header;

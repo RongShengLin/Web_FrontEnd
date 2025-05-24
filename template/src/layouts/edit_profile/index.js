@@ -35,30 +35,61 @@ import ProfilesList from "examples/Lists/ProfilesList";
 import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
 
 // Overview page components
-import Header from "layouts/edit_profile/components/Header";
+import Header from "layouts/profile/components/Header";
 import PlatformSettings from "layouts/profile/components/PlatformSettings";
 
 // Data
 import profilesListData from "layouts/profile/data/profilesListData";
 
-
+import { useEffect, useState } from "react";
+import { TextField, Button, Avatar } from "@mui/material";
+import { BASE_URL } from "api/setting";
+import { useNavigate } from "react-router-dom";
 
 function Overview() {
+  const [profile, setProfile] = useState({
+    name: "",
+    email: "",
+    student_id: "",
+    phone_number: "",
+    trading_location: "",
+    head_image: "",
+  });
+  const [uploadFile, setUploadFile] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const name = sessionStorage.getItem("username") || localStorage.getItem("username");
+    if (!name) {
+      navigate("/authentication/sign-in");
+      return;
+    }
+    fetch(`${BASE_URL}/api/user/`, {
+      method: "GET",
+      credentials: "include", 
+    })
+      .then((res) => res.json())
+      .then((data) => setProfile(data))
+      .catch((err) => console.error("Fetch error:", err));
+      }, [navigate]);
   return (
     <HomePageLayout>
       <HomePageNavbar />
       <MDBox mb={2} />
-      <Header>
+      <Header headImage={profile.head_image}>
         <MDBox mt={5} mb={3}>
           <ProfileInfoCard
-            name="DaiKai Zhu" 
-            title="profile information"
-            description="A NTU student Who love LOL and B4B."
+            name={profile.name}
             info={{
-              studentID: "r13922000",
-              mobile: "0900-000-000",
-              email: "DaiKai7414@gmail.com",
-              tradingLocation: "Front Gate",
+              studentID: profile.student_id,
+              mobile: profile.phone_number,
+              email: profile.email,
+              tradingLocation: profile.trading_location,
+              head_image: profile.head_image,
+            }}
+            action={{
+              label: "Save",
+              route: "#", // 不是真的 route，而是手動觸發
             }}
             shadow={false}
           />

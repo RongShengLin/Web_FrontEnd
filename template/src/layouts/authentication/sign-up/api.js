@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -22,6 +22,8 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agree, setAgree] = useState(false);
   const [message, setMessage] = useState("");
+  const [studentId, setStudentId] = useState("");
+  const fileInputRef = useRef(null);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -50,9 +52,20 @@ function Register() {
       const text = await response.text();
 
       if (text === "OK") {
+        // ✅ 註冊成功 → 上傳學生證
+        const file = fileInputRef.current?.files[0];
+        if (file && studentId) {
+          const uploadForm = new FormData();
+          uploadForm.append("file", file);
+          uploadForm.append("student_id", studentId);
+          await fetch(`${BASE_URL}/api/upload_certificate_file`, {
+            method: "POST",
+            body: uploadForm,
+          });
+        }
         setMessage("註冊成功，請前往登入");
       } else {
-        setMessage(text); // 顯示像是「Account 已登記」或「Email 已登記」
+        setMessage(text);
       }
     } catch (error) {
       setMessage("發生錯誤，請稍後再試");
@@ -124,10 +137,25 @@ function Register() {
               />
             </MDBox>
             <MDBox mb={2}>
+            <MDInput
+              type="text"
+              label="Student ID"
+              variant="standard"
+              fullWidth
+              value={studentId}
+              onChange={(e) => setStudentId(e.target.value)}
+            />
+            </MDBox>
+            <MDBox mb={2}>
               <MDTypography variant="button">
                 Upload Your Student ID card
               </MDTypography>
-              <MDInput type="file" accept="image/*" />
+              <MDInput
+                type="file"
+                inputRef={fileInputRef}
+                accept="image/*"
+                fullWidth
+              />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Checkbox

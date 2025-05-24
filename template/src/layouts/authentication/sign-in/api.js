@@ -40,21 +40,25 @@ function Login() {
       const response = await fetch(`${BASE_URL}${API_PREFIX}`, {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       const text = await response.text();
 
       try {
-        const data = JSON.parse(text);
         setMessage("登入成功！");
+        const res = await fetch(`${BASE_URL}/api/user/?name=${username}`);
+        const data = await res.json();
 
         if (rememberMe) {
-          localStorage.setItem("username", data.username);
+          localStorage.setItem("username", username);
           localStorage.setItem("email", data.email);
         } else {
-          sessionStorage.setItem("username", data.username);
+          sessionStorage.setItem("username", username);
           sessionStorage.setItem("email", data.email);
         }
+        console.log("Profile name:", username);
+        console.log("Profile email:", data.email);
         // 其他 page 要讀取 username 和 email
         // const username = sessionStorage.getItem("username") || localStorage.getItem("username");
         // const email = sessionStorage.getItem("email") || localStorage.getItem("email");
