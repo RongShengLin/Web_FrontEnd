@@ -104,8 +104,8 @@ function HomePageNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
-      <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" />
-      <NotificationItem icon={<Icon>podcasts</Icon>} title="Manage Podcast sessions" />
+      <NotificationItem icon={<Icon>login</Icon>} title="Sign In" url="/authentication/sign-in"/>
+      <NotificationItem icon={<Icon>vpn_key</Icon>} title="Sign Up" url="/authentication/sign-up"/>
     </Menu>
   );
 
@@ -138,7 +138,7 @@ function HomePageNavbar({ absolute, light, isMini }) {
               <MDInput label="Search here" />
             </MDBox> */}
             <MDBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in/basic">
+              <Link to="/profile">
                 <IconButton sx={navbarIconButton} size="small" disableRipple>
                   <Icon sx={iconsStyle}>account_circle</Icon>
                 </IconButton>
@@ -163,7 +163,7 @@ function HomePageNavbar({ absolute, light, isMini }) {
               >
                 <Icon sx={iconsStyle}>settings</Icon>
               </IconButton> */}
-              <Link to="/authentication/sign-in/basic">
+              <Link to="/billing">
                 <IconButton sx={navbarIconButton} size="small" disableRipple>
                   <Icon sx={iconsStyle}>shopping_cart</Icon>
                 </IconButton>
@@ -178,9 +178,12 @@ function HomePageNavbar({ absolute, light, isMini }) {
                 variant="contained"
                 onClick={handleOpenMenu}
               >
-                <Icon sx={iconsStyle}>notifications</Icon>
+                <Icon sx={iconsStyle}>login</Icon>
               </IconButton>
               {renderMenu()}
+              <IconButton sx={navbarIconButton} size="small" disableRipple>
+                <Icon sx={iconsStyle}>logout</Icon>
+              </IconButton>
             </MDBox>
           </MDBox>
         )}

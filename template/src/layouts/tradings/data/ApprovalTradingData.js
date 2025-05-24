@@ -86,6 +86,7 @@ export default function data() {
       { Header: "Name", accessor: "Name", align: "left" },
       { Header: "Price", accessor: "Price", align: "center" },
       { Header: "Number", accessor: "number", align: "center" },
+      { Header: "Time and Location", accessor: "Time_Location", align: "center" },
       { Header: "Buyer", accessor: "Buyer", align: "center" },
       { Header: "Comfirm", accessor: "Comfirm", align: "center" },
     ],
@@ -108,31 +109,15 @@ export default function data() {
           10
           </MDTypography>
         ),
-        Buyer: <Author image={zombie} name="DaiKai" email="DaiKai@ntu.edu.tw" />,
-        Comfirm: (
-          <MDButton variant="contained" color="primary" size="small">
-            <MDTypography variant="h6" fontWeight="medium" color="white"> 
-              Comfirm Trading
-            </MDTypography>
-          </MDButton>
-        ),
-      },
-            {
-        Product: <Product image={homeDecor1} name="Asana" />,
-        Name: (
-          <MDTypography variant="h5" color="text" fontWeight="medium">
-            Item Name
-          </MDTypography>
-        ),
-        Price: (
-          <MDTypography variant="h5" color="error" fontWeight="medium">
-            $10000
-          </MDTypography>
-        ),
-        number: (
-          <MDTypography variant="h5" color="text" fontWeight="medium">
-          10
-          </MDTypography>
+        Time_Location: (
+          <MDBox display="flex" alignItems="center" lineHeight={1}>
+            <MDBox ml={2} lineHeight={1}>
+              <MDTypography display="block" variant="button" fontWeight="medium">
+                Front Gate
+              </MDTypography>
+              <MDTypography variant="caption">5/28 12:00</MDTypography>
+            </MDBox>
+          </MDBox>
         ),
         Buyer: <Author image={zombie} name="DaiKai" email="DaiKai@ntu.edu.tw" />,
         Comfirm: (
@@ -160,6 +145,16 @@ export default function data() {
           10
           </MDTypography>
         ),
+        Time_Location: (
+          <MDBox display="flex" alignItems="center" lineHeight={1}>
+            <MDBox ml={2} lineHeight={1}>
+              <MDTypography display="block" variant="button" fontWeight="medium">
+                Front Gate
+              </MDTypography>
+              <MDTypography variant="caption">5/28 12:00</MDTypography>
+            </MDBox>
+          </MDBox>
+        ),
         Buyer: <Author image={zombie} name="DaiKai" email="DaiKai@ntu.edu.tw" />,
         Comfirm: (
           <MDButton variant="contained" color="primary" size="small">
@@ -185,6 +180,52 @@ export default function data() {
           <MDTypography variant="h5" color="text" fontWeight="medium">
           10
           </MDTypography>
+        ),
+        Time_Location: (
+          <MDBox display="flex" alignItems="center" lineHeight={1}>
+            <MDBox ml={2} lineHeight={1}>
+              <MDTypography display="block" variant="button" fontWeight="medium">
+                Front Gate
+              </MDTypography>
+              <MDTypography variant="caption">5/28 12:00</MDTypography>
+            </MDBox>
+          </MDBox>
+        ),
+        Buyer: <Author image={zombie} name="DaiKai" email="DaiKai@ntu.edu.tw" />,
+        Comfirm: (
+          <MDButton variant="contained" color="primary" size="small">
+            <MDTypography variant="h6" fontWeight="medium" color="white"> 
+              Comfirm Trading
+            </MDTypography>
+          </MDButton>
+        ),
+      },
+            {
+        Product: <Product image={homeDecor1} name="Asana" />,
+        Name: (
+          <MDTypography variant="h5" color="text" fontWeight="medium">
+            Item Name
+          </MDTypography>
+        ),
+        Price: (
+          <MDTypography variant="h5" color="error" fontWeight="medium">
+            $10000
+          </MDTypography>
+        ),
+        number: (
+          <MDTypography variant="h5" color="text" fontWeight="medium">
+          10
+          </MDTypography>
+        ),
+        Time_Location: (
+          <MDBox display="flex" alignItems="center" lineHeight={1}>
+            <MDBox ml={2} lineHeight={1}>
+              <MDTypography display="block" variant="button" fontWeight="medium">
+                Front Gate
+              </MDTypography>
+              <MDTypography variant="caption">5/28 12:00</MDTypography>
+            </MDBox>
+          </MDBox>
         ),
         Buyer: <Author image={zombie} name="DaiKai" email="DaiKai@ntu.edu.tw" />,
         Comfirm: (

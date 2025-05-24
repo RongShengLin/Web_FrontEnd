@@ -111,7 +111,7 @@ function Tables() {
       <MDBox pt={6} pb={3}>
         <Grid container spacing={6}>
           {/* Trader List */}
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Card>
               <MDBox
                 mx={2}
@@ -144,7 +144,7 @@ function Tables() {
                 </Grid>
               </Grid>
             </Card>
-          </Grid>
+          </Grid> */}
 
           {/* Product List */}
           <Grid item xs={12}>

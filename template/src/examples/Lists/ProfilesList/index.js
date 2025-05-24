@@ -48,6 +48,11 @@ function ProfilesList({ title, profiles, shadow }) {
           {title}
         </MDTypography>
       </MDBox>
+      <MDBox pt={1} px={2}>
+        <MDButton variant="outlined" color="primary">
+          <Icon>file_upload</Icon>&nbsp;Upload Product
+        </MDButton>  
+      </MDBox>
       <MDBox p={2}>
         <MDBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
           {renderProfiles}

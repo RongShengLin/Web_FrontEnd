@@ -51,6 +51,7 @@ import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
 import BannerCarousel from "examples/BannerCarousel"
+import TransactionTimeList from "examples/Time_select"
 
 // Data
 import reportsBarChartData from "layouts/HomePage/data/reportsBarChartData";
@@ -181,6 +182,14 @@ function Item_Edit() {
                                     <MDInput label="Trading_place" placeholder={"Trading_Place"} />
                                 </ListItem>
                             </List>
+                        </MDBox>
+                        <MDBox display="flex" alignItems="center" gap={1} mb={1}>
+                            <MDTypography variant="h4" fontWeight="bold" textTransform="capitalize">
+                                Trading Times
+                            </MDTypography>
+                        </MDBox>
+                        <MDBox display="flex" alignItems="center" gap={1} mb={2}>
+                            <TransactionTimeList />
                         </MDBox>
                         <MDBox display="flex" alignItems="center" gap={1} mb={2}>
                             <MDTypography variant="h4" fontWeight="bold" textTransform="capitalize">

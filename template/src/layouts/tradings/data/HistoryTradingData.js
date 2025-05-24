@@ -36,6 +36,7 @@ import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 import logoInvesion from "assets/images/small-logos/logo-invision.svg";
 import team2 from "assets/images/team-2.jpg";
 import homeDecor1 from "assets/images/home-decor-1.jpg";
+import zombie from "assets/images/zombie.png";
 import { Description } from "@mui/icons-material";
 import MDButton from "components/MDButton";
 
@@ -86,7 +87,8 @@ export default function data() {
       { Header: "Name", accessor: "Name", align: "left" },
       { Header: "Price", accessor: "Price", align: "center" },
       { Header: "Number", accessor: "number", align: "center" },
-      { Header: "Trader", accessor: "Trader", align: "center" },
+      { Header: "Seller", accessor: "Trader", align: "center" },
+      { Header: "Buyer", accessor: "Buyer", align: "center" },
     ],
 
     rows: [
@@ -108,6 +110,7 @@ export default function data() {
           </MDTypography>
         ),
         Trader: <Author image={team2} name="John Michael" email="john@creative-tim.com" />,
+        Buyer: <Author image={zombie} name="DaiKai" email="DaiKai@ntu.edu.tw" />,
       },
     ],
   };

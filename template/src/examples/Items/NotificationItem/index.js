@@ -29,9 +29,9 @@ import MDTypography from "components/MDTypography";
 // custom styles for the NotificationItem
 import menuItem from "examples/Items/NotificationItem/styles";
 
-const NotificationItem = forwardRef(({ icon, title, ...rest }, ref) => (
+const NotificationItem = forwardRef(({ icon, title, url, ...rest }, ref) => (
   <MenuItem {...rest} ref={ref} sx={(theme) => menuItem(theme)}>
-    <MDBox component={Link} py={0.5} display="flex" alignItems="center" lineHeight={1}>
+    <MDBox component={Link} py={0.5} display="flex" alignItems="center" lineHeight={1} href={url}>
       <MDTypography variant="body1" color="secondary" lineHeight={0.75}>
         {icon}
       </MDTypography>
@@ -46,6 +46,7 @@ const NotificationItem = forwardRef(({ icon, title, ...rest }, ref) => (
 NotificationItem.propTypes = {
   icon: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
 };
 
 export default NotificationItem;

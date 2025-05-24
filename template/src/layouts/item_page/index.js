@@ -37,11 +37,7 @@ import HomePageLayout from "examples/LayoutContainers/HomePageLayout";
 import HomePageNavbar from "examples/Navbars/HomePageNavbar";
 import BasicSelect from "examples/Select";
 import Footer from "examples/Footer";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
-import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
-import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
-import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
-import BannerCarousel from "examples/BannerCarousel"
+import TimeManager from "./component/Time_selector/index.js";
 
 // Data
 import reportsBarChartData from "layouts/HomePage/data/reportsBarChartData";
@@ -182,6 +178,14 @@ function Item_Page() {
                                     }}/>
                                 </ListItem>
                             </List>
+                        </MDBox>
+                        <MDBox display="flex" alignItems="center" gap={1} mb={1}>
+                            <MDTypography variant="h4" fontWeight="bold" textTransform="capitalize">
+                                Trading Times
+                            </MDTypography>
+                        </MDBox>
+                        <MDBox display="flex" alignItems="center" gap={1} mb={1}>
+                            <TimeManager />
                         </MDBox>
                     </MDBox>
                 </Grid>
