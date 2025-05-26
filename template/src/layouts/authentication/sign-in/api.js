@@ -34,8 +34,8 @@ function Login() {
 
     try {
       const formData = new FormData();
-      formData.append("name", username); // Django expects "name"
-      formData.append("passwd", password); // Django expects "passwd"
+      formData.append("name", username);
+      formData.append("passwd", password);
 
       const response = await fetch(`${BASE_URL}${API_PREFIX}`, {
         method: "POST",
@@ -43,38 +43,31 @@ function Login() {
         credentials: "include",
       });
 
-      const text = await response.text();
+      const data = await response.json();
 
-      try {
+      if (response.ok) {
         setMessage("登入成功！");
-        const res = await fetch(`${BASE_URL}/api/user/`, {
-          method: "GET",
-          credentials: "include",  // ✅ 加上這個才會帶 cookie
-        });
-        const data = await res.json();
+
+        const user = data.name;
+        const email = data.email;
 
         if (rememberMe) {
-          localStorage.setItem("username", username);
-          localStorage.setItem("email", data.email);
-        } else {
-          sessionStorage.setItem("username", username);
-          sessionStorage.setItem("email", data.email);
+          localStorage.setItem("username", user);
+          localStorage.setItem("email", email);
         }
-        console.log("Profile name:", username);
-        console.log("Profile email:", data.email);
-        // 其他 page 要讀取 username 和 email
-        // const username = sessionStorage.getItem("username") || localStorage.getItem("username");
-        // const email = sessionStorage.getItem("email") || localStorage.getItem("email");
+        sessionStorage.setItem("username", user);
+        sessionStorage.setItem("email", email);
 
         setTimeout(() => navigate("/dashboard"), 1000);
-      } catch (err) {
-        setMessage(text); // Django returns "密碼錯誤" or "沒有這個帳號"
+      } else {
+        setMessage(data.message || "登入失敗，請檢查帳號密碼");
       }
     } catch (err) {
-      console.error(err);
+      console.error("登入錯誤:", err);
       setMessage("登入失敗，請稍後再試");
     }
   };
+
 
   return (
     <BasicLayout image={bgImage}>

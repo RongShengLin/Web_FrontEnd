@@ -37,6 +37,7 @@ import typography from "assets/theme/base/typography";
 import { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { BASE_URL } from "api/setting";
+import { useNavigate } from "react-router-dom";
 
 function ProfileInfoCard({ name, info, shadow }) {
   const [profile, setProfile] = useState({
@@ -49,6 +50,7 @@ function ProfileInfoCard({ name, info, shadow }) {
   });
   const [uploadFile, setUploadFile] = useState(null);
   const [avatarSrc, setAvatarSrc] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     setProfile((prev) => ({
@@ -97,6 +99,8 @@ function ProfileInfoCard({ name, info, shadow }) {
     });
 
     alert("Profile updated successfully");
+    sessionStorage.setItem("username", profile.name);
+    navigate("/edit_profile");
 
     fetch(`${BASE_URL}/api/user/`, {
       method: "GET",
@@ -112,6 +116,7 @@ function ProfileInfoCard({ name, info, shadow }) {
         head_image: data.head_image || "",
       }))
       .catch((err) => console.error("Fetch error:", err));
+      
   };
 
   return (

@@ -73,7 +73,6 @@ function Overview() {
       .catch((err) => console.error("Fetch error:", err));
       }, [navigate]);
     
-  console.log("Profile data:", profile.head_image);
   return (
     <HomePageLayout>
       <HomePageNavbar />
