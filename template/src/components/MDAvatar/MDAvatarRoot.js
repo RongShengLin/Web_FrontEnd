@@ -84,6 +84,11 @@ export default styled(Avatar)(({ theme, ownerState }) => {
     color: white.main,
     fontWeight: fontWeightRegular,
     boxShadow: boxShadows[shadow],
+    '& img': {
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+    },
     ...sizeValue,
   };
 });

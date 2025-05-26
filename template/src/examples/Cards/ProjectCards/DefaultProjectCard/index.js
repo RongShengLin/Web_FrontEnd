@@ -36,6 +36,10 @@ function DefaultProjectCard({ image, label, title, description, action, price, i
   return (
     <Card
       sx={{
+        width: "100%",
+        maxWidth: 450,
+        maxHeight: 350,
+        height: 350,
         display: "flex",
         flexDirection: "column",
         backgroundColor: "transparent",
@@ -43,13 +47,16 @@ function DefaultProjectCard({ image, label, title, description, action, price, i
         overflow: "visible",
       }}
     >
-      <MDBox position="relative" width="100.25%" shadow="xl" borderRadius="xl">
+      <MDBox position="relative" height="60%" width="100.25%" shadow="xl" borderRadius="xl">
         <CardMedia
           src={image}
           component="img"
           title={title}
           sx={{
             maxWidth: "100%",
+            width: "100%",
+            height: "100%",
+            maxHeight: "100%",
             margin: 0,
             boxShadow: ({ boxShadows: { md } }) => md,
             objectFit: "cover",

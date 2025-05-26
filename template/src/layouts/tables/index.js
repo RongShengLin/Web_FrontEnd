@@ -212,13 +212,13 @@ function Tables() {
                   noEndBorder
                 />
               </MDBox>
-              <Grid container spacing={3} justifyContent="center">
+              {/* <Grid container spacing={3} justifyContent="center">
                 <Grid item>
                   <MDBox mb={1} mt={1}>
                     <Pagination count={10} showFirstButton showLastButton />
                   </MDBox>
                 </Grid>
-              </Grid>
+              </Grid> */}
             </Card>
           </Grid>
         </Grid>

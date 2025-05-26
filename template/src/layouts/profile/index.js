@@ -29,6 +29,7 @@ import profilesListData from "layouts/profile/data/profilesListData";
 import { useState, useEffect } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Avatar } from "@mui/material";
 import { BASE_URL } from "api/setting";
+import MDAvatar from "components/MDAvatar";
 
 
 function Overview() {
@@ -92,7 +93,7 @@ function Overview() {
             </Grid>
             <MDBox mt={2}>
               <MDTypography variant="h6">頭像預覽：</MDTypography>
-              <Avatar src={`${BASE_URL}${profile.head_image}`} alt="head" sx={{ width: 100, height: 100 }} />
+              <MDAvatar src={`${BASE_URL}${profile.head_image}`} alt="head" sx={{ width: 100, height: 100 }} />
             </MDBox>
           </Grid>
         </MDBox>
