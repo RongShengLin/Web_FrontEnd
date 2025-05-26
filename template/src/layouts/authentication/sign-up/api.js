@@ -16,62 +16,57 @@ import { BASE_URL } from "api/setting";
 const API_PREFIX = "/api/register/";
 
 function Register() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [agree, setAgree] = useState(false);
-  const [message, setMessage] = useState("");
-  const [studentId, setStudentId] = useState("");
-  const fileInputRef = useRef(null);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [agree, setAgree] = useState(false);
+    const [message, setMessage] = useState("");
+    const [studentId, setStudentId] = useState("");
+    const fileInputRef = useRef(null);
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
+    const handleRegister = async (e) => {
+        e.preventDefault();
 
-    if (!agree) {
-      setMessage("請勾選同意條款");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setMessage("兩次密碼輸入不一致");
-      return;
-    }
-
-    try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("passwd", password);
-
-      const response = await fetch(`${BASE_URL}${API_PREFIX}`, {
-        method: "POST",
-        body: formData,
-      });
-
-      const text = await response.text();
-
-      if (text === "OK") {
-        // ✅ 註冊成功 → 上傳學生證
-        const file = fileInputRef.current?.files[0];
-        if (file && studentId) {
-          const uploadForm = new FormData();
-          uploadForm.append("file", file);
-          uploadForm.append("student_id", studentId);
-          await fetch(`${BASE_URL}/api/upload_certificate_file`, {
-            method: "POST",
-            body: uploadForm,
-          });
+        if (!agree) {
+            setMessage("請勾選同意條款");
+            return;
         }
-        setMessage("註冊成功，請前往登入");
-      } else {
-        setMessage(text);
-      }
-    } catch (error) {
-      setMessage("發生錯誤，請稍後再試");
-      console.error(error);
-    }
-  };
+
+        if (password !== confirmPassword) {
+            setMessage("兩次密碼輸入不一致");
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append("name", name);
+            formData.append("email", email);
+            formData.append("passwd", password);
+            formData.append("student_id", studentId);
+
+            const file = fileInputRef.current?.files[0];
+            if (file) {
+              formData.append("card_image", file);
+            }
+
+            const response = await fetch(`${BASE_URL}${API_PREFIX}`, {
+              method: "POST",
+              body: formData,
+            });
+
+            const text = await response.text();
+
+            if (text === "OK") {
+              setMessage("註冊成功，請前往登入");
+            } else {
+              setMessage(text);
+            }
+          } catch (error) {
+            setMessage("發生錯誤，請稍後再試");
+            console.error(error);
+          }
+      };
 
   return (
     <CoverLayout image={bgImage}>

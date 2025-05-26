@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useMaterialUIController } from "context";
+import PropTypes from "prop-types";
 
-export default function BasicSelect() {
+export default function BasicSelect({ maxNumber = 3, onChange }) {
   const [number, setNumber] = useState(1);
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
   const handleChange = (event) => {
     setNumber(event.target.value);
+     onChange?.(event.target.value);
   };
 
   return (
@@ -32,10 +34,17 @@ export default function BasicSelect() {
             },
         }}
       >
-        <MenuItem value={1} sx={{ justifyContent: 'center' }}>1</MenuItem>
-        <MenuItem value={2} sx={{ justifyContent: 'center' }}>2</MenuItem>
-        <MenuItem value={3} sx={{ justifyContent: 'center' }}>3</MenuItem>
+        {[...Array(maxNumber).keys()].map((i) => (
+          <MenuItem key={i + 1} value={i + 1} sx={{ justifyContent: 'center' }}>
+            {i + 1}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );
 }
+
+BasicSelect.propTypes = {
+  maxNumber: PropTypes.number,
+  onChange: PropTypes.func,
+};

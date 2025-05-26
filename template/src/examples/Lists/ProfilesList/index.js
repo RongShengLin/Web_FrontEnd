@@ -33,10 +33,12 @@ import MDAvatar from "components/MDAvatar";
 import MDButton from "components/MDButton";
 import { useMaterialUIController } from "context";
 import Bill from "layouts/billing/components/Bill";
+import { useNavigate } from "react-router-dom";
 
 function ProfilesList({ title, profiles, shadow }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
+  const navigate = useNavigate();
   const renderProfiles = profiles.map(({ image, name, price, num_item}) => (
     <Bill key={name || index} image={image} name={name} price={price} number_items={num_item} />
   ));
@@ -49,9 +51,9 @@ function ProfilesList({ title, profiles, shadow }) {
         </MDTypography>
       </MDBox>
       <MDBox pt={1} px={2}>
-        <MDButton variant="outlined" color="primary">
+        <MDButton variant="outlined" color="primary" onClick={() => navigate("/item_create")}>
           <Icon>file_upload</Icon>&nbsp;Upload Product
-        </MDButton>  
+        </MDButton> 
       </MDBox>
       <MDBox p={2}>
         <MDBox component="ul" display="flex" flexDirection="column" p={0} m={0}>

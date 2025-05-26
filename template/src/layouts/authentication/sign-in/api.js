@@ -47,7 +47,10 @@ function Login() {
 
       try {
         setMessage("登入成功！");
-        const res = await fetch(`${BASE_URL}/api/user/?name=${username}`);
+        const res = await fetch(`${BASE_URL}/api/user/`, {
+          method: "GET",
+          credentials: "include",  // ✅ 加上這個才會帶 cookie
+        });
         const data = await res.json();
 
         if (rememberMe) {

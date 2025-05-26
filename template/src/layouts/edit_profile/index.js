@@ -72,11 +72,13 @@ function Overview() {
       .then((data) => setProfile(data))
       .catch((err) => console.error("Fetch error:", err));
       }, [navigate]);
+    
+  console.log("Profile data:", profile.head_image);
   return (
     <HomePageLayout>
       <HomePageNavbar />
       <MDBox mb={2} />
-      <Header headImage={profile.head_image}>
+      <Header headImage={`${BASE_URL}${profile.head_image}`}>
         <MDBox mt={5} mb={3}>
           <ProfileInfoCard
             name={profile.name}

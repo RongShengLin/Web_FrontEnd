@@ -27,6 +27,9 @@ import HomePageLayout from "examples/LayoutContainers/HomePageLayout";
 import HomePageNavbar from "examples/Navbars/HomePageNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
+import IconButton from "@mui/material/IconButton";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+
 
 // Data
 import authorsTableData from "layouts/tables/data/traderTableData";
@@ -39,37 +42,68 @@ const API_URL = `${BASE_URL}/api/auctions/`;
 function Tables() {
   const navigate = useNavigate();
 
-  const { columns, rows } = authorsTableData(); // For Trader table
-
+  const { columns, rows } = authorsTableData();
   const [pColumns] = useState([
     { Header: "Product", accessor: "product", align: "left" },
     { Header: "name", accessor: "product_name", align: "left" },
     { Header: "Price", accessor: "price", align: "center" },
-    { Header: "Position", accessor: "position", align: "center" },
+    { Header: "Position", accessor: "trading_location", align: "center" },
     { Header: "Type", accessor: "product_type", align: "center" },
     { Header: "Trader", accessor: "owner_email", align: "center" },
+    { Header: "Unfavorite", accessor: "remove", align: "center" },
   ]);
-
+  
   const [pRows, setPRows] = useState([]);
 
+  const handleRemoveFavorite = async (productId) => {
+    const formData = new FormData();
+    formData.append("product_id", productId);
+    formData.append("action", "remove");
+
+    try {
+      await fetch(`${BASE_URL}/api/favorites/`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+      setPRows((prev) => prev.filter((row) => row.product_id !== productId));
+    } catch (err) {
+      console.error("取消收藏失敗", err);
+    }
+  };
+
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchFavoriteProducts = async () => {
       try {
-        const res = await fetch(API_URL);
+        const res = await fetch(`${BASE_URL}/api/favorites/items/`, {
+          credentials: "include",
+        });
         const data = await res.json();
         const formatted = data.map((item) => ({
           ...item,
           product: (
-            <MDBox display="flex" alignItems="center" gap={2} sx={{ cursor: "pointer" }} onClick={() => navigate(`/item/${item.product_id}`)}>
+            <MDBox
+              display="flex"
+              alignItems="center"
+              gap={2}
+              sx={{ cursor: "pointer" }}
+              onClick={() => navigate(`/item/${item.product_id}`)}
+            >
               <img
-                src={item.picture_url || "https://via.placeholder.com/50"}
+                src={`${BASE_URL}${item.product_image}` || "https://via.placeholder.com/50"}
                 alt={item.product_name}
                 style={{ width: "150px", height: "150px", borderRadius: "12px", objectFit: "cover" }}
               />
             </MDBox>
           ),
           product_name: (
-            <MDTypography variant="h6" fontWeight="medium" color="info" sx={{ cursor: "pointer"}} onClick={() => navigate(`/item/${item.product_id}`)}>
+            <MDTypography
+              variant="h6"
+              fontWeight="medium"
+              color="info"
+              sx={{ cursor: "pointer" }}
+              onClick={() => navigate(`/item/${item.product_id}`)}
+            >
               {item.product_name}
             </MDTypography>
           ),
@@ -78,32 +112,38 @@ function Tables() {
               ${item.price}
             </MDTypography>
           ),
-          owner_email:(
+          owner_email: (
             <MDBox display="flex" alignItems="center" gap={1}>
-            <img
-              src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${item.owner_email}`}
-              alt="avatar"
-              style={{ width: 32, height: 32, borderRadius: "50%" }}
-            />
-            <MDBox display="flex" flexDirection="column">
-              <MDTypography variant="button" fontWeight="medium" color="text">
-                {item.owner_email.split("@")[0]}
-              </MDTypography>
-              <MDTypography variant="caption" color="text">
-                {item.owner_email}
-              </MDTypography>
+              <img
+                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${item.owner_email}`}
+                alt="avatar"
+                style={{ width: 32, height: 32, borderRadius: "50%" }}
+              />
+              <MDBox display="flex" flexDirection="column">
+                <MDTypography variant="button" fontWeight="medium" color="text">
+                  {item.owner_email.split("@")[0]}
+                </MDTypography>
+                <MDTypography variant="caption" color="text">
+                  {item.owner_email}
+                </MDTypography>
+              </MDBox>
             </MDBox>
-          </MDBox>
+          ),
+          remove: (
+            <IconButton onClick={() => handleRemoveFavorite(item.product_id)}>
+              <FavoriteIcon sx={{ color: "error.main" }} />
+            </IconButton>
           ),
         }));
         setPRows(formatted);
       } catch (err) {
-        console.error("Failed to fetch products:", err);
+        console.error("載入收藏商品失敗", err);
       }
     };
 
-    fetchProducts();
+    fetchFavoriteProducts();
   }, [navigate]);
+
 
   return (
     <HomePageLayout>

@@ -18,9 +18,10 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 import { useMaterialUIController } from "context";
+import PropTypes from "prop-types";
 
 
-export default function TimeManager() {
+export default function TimeManager({ value, onChange }) {
   const [inputValue, setInputValue] = useState("");
   const [timeList, setTimeList] = useState([]);
   
@@ -29,14 +30,18 @@ export default function TimeManager() {
   const textColor = darkMode ? "#ffffff" : "#000000";
 
   const handleAddTime = () => {
-    if (inputValue) {
-      setTimeList((prev) => [...prev, inputValue]);
+    if (inputValue && !timeList.includes(inputValue)) {
+      setTimeList((prev) =>
+        [...prev, inputValue].sort((a, b) => new Date(a) - new Date(b))
+      );
+      onChange([...value, inputValue]); 
       setInputValue("");
     }
   };
 
   const handleRemoveTime = (indexToRemove) => {
     setTimeList((prev) => prev.filter((_, i) => i !== indexToRemove));
+    onChange(updated);
   };
 
   return (
@@ -73,7 +78,7 @@ export default function TimeManager() {
         </AccordionSummary>
         <AccordionDetails>
             <List>
-                {timeList.map((time, index) => (
+                {value.map((time, index) => (
                     <ListItem
                         key={index}
                         secondaryAction={
@@ -91,3 +96,8 @@ export default function TimeManager() {
     </MDBox>
   );
 }
+
+TimeManager.propTypes = {
+  value: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onChange: PropTypes.func.isRequired,
+};

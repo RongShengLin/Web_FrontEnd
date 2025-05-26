@@ -35,6 +35,8 @@ function Configurator({ onFilter }) {
 
   const categoryGroups = {
     "3C": ["Phone", "Laptop", "Screen"],
+    "Tool": ["Hammer", "Screwdriver"],
+    "Accessories": ["Bag", "Ring", "Necklace"],
     "Others": ["Camera", "TV"],
   };
 
@@ -53,7 +55,7 @@ function Configurator({ onFilter }) {
   };
 
   const handleStart = () => {
-    console.log("Sending filters:", { price, categories });
+    // console.log("Sending filters:", { price, categories });
     onFilter({ price, categories });
     handleCloseConfigurator();
   };

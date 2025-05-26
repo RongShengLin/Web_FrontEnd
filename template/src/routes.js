@@ -141,6 +141,18 @@ const routes = [
     route: "/Item_Edit",
     component: <Item_Edit />,
   },
+  {
+    type: "route",
+    key: "item-create",
+    route: "/Item_Create",
+    component: <Item_Edit />,
+  },
+  {
+    type: "route",
+    key: "item-edit",
+    route: "/Item_Edit/:id",
+    component: <Item_Edit />,
+  }
 ];
 
 export default routes;

@@ -67,6 +67,8 @@ import { maxHeight, minHeight } from "@mui/system";
 import theme from "assets/theme";
 import MDInput from "components/MDInput";
 import { useParams } from "react-router-dom";
+import { number } from "prop-types";
+import { BASE_URL } from "api/setting";
 
 function Item_Edit() {
     const [product, setProduct] = useState({
@@ -74,16 +76,9 @@ function Item_Edit() {
         price: "",
         description: "",
         number: 1,
-        trading_place: "",
+        trading_location: "",
         product_type: "",
     });
-    const [controller] = useMaterialUIController();
-    const { darkMode } = controller;
-    const { sales, tasks } = reportsLineChartData;
-    console.log(darkMode);
-    const [categories, setCategories] = useState([]);
-    const textColor = darkMode ? "#ffffff" : "#000000";
-    console.log(textColor);
     const { id } = useParams(); 
     const categoryGroups = {
         "3C": ["Phone", "Laptop", "Screen"],
@@ -91,58 +86,81 @@ function Item_Edit() {
         "Accessories": ["Bag", "Ring", "Necklace"],
         "Others": ["Camera", "TV"],
     };
+    const [tradingTimes, setTradingTimes] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [uploadImage, setUploadImage] = useState(null);
 
-  useEffect(() => {
-    if (id) {
-        fetch(`${BASE_URL}/api/auctions/${id}/`, {
-        method: "GET",
-        credentials: "include",
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            setProduct({
-                name: data.product_name,
-                price: data.price,
-                description: data.description || "",
-                number: 1,
-                trading_place: data.position,
-                product_type: data.product_type,
+    const [controller] = useMaterialUIController();
+    const { darkMode } = controller;
+    const { sales, tasks } = reportsLineChartData;
+    const textColor = darkMode ? "#ffffff" : "#000000";
+
+    // console.log(darkMode);
+    // console.log(textColor);
+
+    useEffect(() => {
+        if (id) {
+            fetch(`${BASE_URL}/api/auctions/${id}/`, {
+                method: "GET",
+                credentials: "include",
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                setProduct({
+                    name: data.product_name,
+                    price: data.price,
+                    description: data.description || "",
+                    number: data.number || -1,
+                    trading_location: data.trading_location || "",
+                    product_type: data.product_type,
+                });
+                setTradingTimes((data.available_times || []).map(t =>
+                    new Date(t).toISOString().slice(0, 16) // ISO to datetime-local input 格式
+                ));
             });
-        });
-    }
-    }, [id]);
+        }
+        }, [id]);
 
     const handleSubmit = async () => {
-        const payload = {
-            product_name: product.name,
-            price: product.price,
-            position: product.trading_place,
-            product_type: product.product_type,
-            picture_url: "https://yourdomain.com/image.jpg",  // 後續可接上傳圖功能
-            owner_email: sessionStorage.getItem("email"),
-        };
+        const formData = new FormData();
+        formData.append("product_name", product.name);
+        formData.append("price", product.price);
+        formData.append("trading_location", product.trading_location);
+        formData.append("product_type", JSON.stringify(categories));
+        formData.append("total_number", product.number);
+        formData.append("product_description", product.description);
+        // formData.append("owner_email", sessionStorage.getItem("email"));
+        formData.append("available_times", JSON.stringify(tradingTimes));
+        if (uploadImage) formData.append("product_image", uploadImage);
 
         const method = id ? "PUT" : "POST";
         const url = id
             ? `${BASE_URL}/api/auctions/${id}/`
             : `${BASE_URL}/api/auctions/`;
 
+        for (let [key, value] of formData.entries()) {
+        if (value instanceof File) {
+            console.log(`${key}: [File] ${value.name}, size: ${value.size}`);
+        } else {
+            console.log(`${key}:`, value);
+        }
+        }
         await fetch(url, {
             method,
-            headers: { "Content-Type": "application/json" },
             credentials: "include",
-            body: JSON.stringify(payload),
+            body: formData,
         });
 
         alert(id ? "商品已更新" : "商品已新增");
     };
 
-  const handleCategoryChange = (event) => {
-    const { name, checked } = event.target;
-    setCategories((prev) =>
-      checked ? [...prev, name] : prev.filter((item) => item !== name)
-    );
-  };
+
+    const handleCategoryChange = (event) => {
+        const { name, checked } = event.target;
+            setCategories((prev) =>
+                checked ? [...prev, name] : prev.filter((item) => item !== name)
+        );
+    };
 
   return (
     <HomePageLayout>
@@ -171,7 +189,16 @@ function Item_Edit() {
                         <MDTypography variant="h4" fontWeight="bold" textTransform="capitalize">
                             Upload Image:
                         </MDTypography>
-                        <MDInput type="file" accept="image/*" />
+                        <MDInput
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                                const file = e.target.files[0];
+                                if (file) {
+                                    setUploadImage(file);
+                                }
+                            }}
+                        />
                     </MDBox>
                 </Grid>
                 <Grid item xs={12} md={7}>
@@ -214,18 +241,17 @@ function Item_Edit() {
                                 fullWidth
                             />
                         </MDBox>
-                        <MDBox display="flex" alignItems="center" gap={1} mb={2}>
+                        {/* <MDBox display="flex" alignItems="center" gap={1} mb={2}>
                             <MDTypography variant="h4" fontWeight="bold" textTransform="capitalize">
                                 Number:
                             </MDTypography>
-                            <MDInput label="Number" placeholder={"Number"} />
                             <MDInput
-                                name="Number"
-                                value={product.price}
+                                name="number"
+                                value={product.number}
                                 onChange={(e) => setProduct({ ...product, [e.target.name]: e.target.value })}
                                 placeholder="Number"
                             />
-                        </MDBox>
+                        </MDBox> */}
                         <MDBox mt={2} mb={2} mr={4} sx={{
                             maxHeight: "100px",
                             minHeight: "75px",
@@ -238,13 +264,18 @@ function Item_Edit() {
                                     <ListItemIcon>
                                         <LoyaltyIcon color="primary"></LoyaltyIcon>
                                     </ListItemIcon>
-                                    <ListItemText primary="Payment method:" sx={{
+                                    <ListItemText primary="Number:" sx={{
                                         '& .MuiTypography-root': {
                                             color: darkMode? "#ffffff" : "#000000",
                                         },
                                         flex: "0 0 auto"
                                     }}/>
-                                    <MDInput label="Number" placeholder={"Number"} />
+                                    <MDInput
+                                        name="number"
+                                        value={product.number}
+                                        onChange={(e) => setProduct({ ...product, [e.target.name]: e.target.value })}
+                                        placeholder="Number"
+                                    />
                                 </ListItem>
                                  <ListItem sx={{
                                     gap: 2,
@@ -252,15 +283,15 @@ function Item_Edit() {
                                     <ListItemIcon>
                                         <LoyaltyIcon color="primary"></LoyaltyIcon>
                                     </ListItemIcon>
-                                    <ListItemText primary="Trading place:" sx={{
+                                    <ListItemText primary="Trading Location:" sx={{
                                         '& .MuiTypography-root': {
                                             color: darkMode? "#ffffff" : "#000000",
                                         },
                                         flex: "0 0 auto"
                                     }}/>
                                     <MDInput
-                                        name="trading_place"
-                                        value={product.trading_place}
+                                        name="trading_location"
+                                        value={product.trading_location}
                                         onChange={(e) => setProduct({ ...product, [e.target.name]: e.target.value })}
                                         placeholder="Place"
                                     />
@@ -273,7 +304,7 @@ function Item_Edit() {
                             </MDTypography>
                         </MDBox>
                         <MDBox display="flex" alignItems="center" gap={1} mb={2}>
-                            <TransactionTimeList />
+                            <TransactionTimeList value={tradingTimes} onChange={setTradingTimes} />
                         </MDBox>
                         <MDBox display="flex" alignItems="center" gap={1} mb={2}>
                             <MDTypography variant="h4" fontWeight="bold" textTransform="capitalize">

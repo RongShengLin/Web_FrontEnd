@@ -125,14 +125,14 @@ function Item_Page() {
                                         </MDTypography>
                                     </MDButton>
                                 </Grid>
-                                 <Grid item xs={12} md={3}>
+                                 {/* <Grid item xs={12} md={3}>
                                     <MDButton variant="outlined" color="primary">
                                         <Icon sx={(theme) => ({ color: "primary.main" })}>shopping_cart</Icon>
                                         <MDTypography variant="h6" fontWeight="medium" color="primary">
                                             Add to cart
                                         </MDTypography>
                                     </MDButton>
-                                </Grid>
+                                </Grid> */}
                                  <Grid item xs={12} md={3}>
                                     <MDButton variant="contained" color="primary">
                                         <MDTypography variant="h6" fontWeight="medium" color="white">

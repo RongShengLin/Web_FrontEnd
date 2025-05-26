@@ -47,13 +47,15 @@ function Overview() {
     const name = sessionStorage.getItem("username") || localStorage.getItem("username");
     console.log("loadProfile", name);
     if (name) {
-      const res = await fetch(`${BASE_URL}/api/user/?name=${name}`, {
+      fetch(`${BASE_URL}/api/user/`, {
         method: "GET",
         credentials: "include", 
-      });
-      const data = await res.json();
-      setProfile(data);
+      })
+        .then((res) => res.json())
+        .then((data) => setProfile(data))
+        .catch((err) => console.error("Fetch error:", err));
     }
+    console.log("Profile data:", profile.head_image);
   };
 
   useEffect(() => {
@@ -64,7 +66,7 @@ function Overview() {
     <HomePageLayout>
       <HomePageNavbar />
       <MDBox mb={2} />
-      <Header headImage={profile.head_image}>
+      <Header headImage={`${BASE_URL}${profile.head_image}`}>
         <MDBox mt={5} mb={3}>
           <Grid container spacing={1}>
             {/* <Grid item xs={12} md={6} xl={4}>
@@ -90,7 +92,7 @@ function Overview() {
             </Grid>
             <MDBox mt={2}>
               <MDTypography variant="h6">頭像預覽：</MDTypography>
-              <Avatar src={`/static/images/${profile.head_image}`} alt="head" sx={{ width: 100, height: 100 }} />
+              <Avatar src={`${BASE_URL}${profile.head_image}`} alt="head" sx={{ width: 100, height: 100 }} />
             </MDBox>
           </Grid>
         </MDBox>

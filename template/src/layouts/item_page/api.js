@@ -6,6 +6,7 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Icon from "@mui/material/Icon";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -30,36 +31,91 @@ const API_PREFIX = "/api/auctions/";
 
 function Item_Page_ID() {
   const { id } = useParams();
+  const [quantity, setQuantity] = useState(1);
   const [controller] = useMaterialUIController();
   const [error, setError] = useState(null);
   const { darkMode } = controller;
 
   const [product, setProduct] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(false);
 
-  useEffect(() => {
-  const fetchProduct = async () => {
+  const toggleFavorite = async () => {
+    const action = isFavorite ? "remove" : "add";
+    const formData = new FormData();
+    formData.append("product_id", id);
+    formData.append("action", action);
+
     try {
-      const response = await fetch(`${BASE_URL}${API_PREFIX}${id}/`);
-      if (!response.ok) {
-        if (response.status === 404) {
-          setError("商品不存在");
-        } else {
-          setError("發生錯誤，請稍後再試");
-        }
-        return;
-      }
+      await fetch(`${BASE_URL}/api/favorites/`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+      setIsFavorite(!isFavorite);  // 切換狀態
+    } catch (err) {
+      console.error("收藏操作失敗", err);
+    }
+  };
+  const handleBuyNow = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("product_id", id); 
+      formData.append("number", quantity);    
+      const res = await fetch(`${BASE_URL}/api/auctions/${id}/transact/`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
 
-      const data = await response.json();
-      setProduct(data);
-      setError(null);
-    } catch (error) {
-      console.error("API 請求失敗", error);
-      setError("無法連接伺服器");
+      if (res.ok) {
+        alert("交易請求已送出！");
+      } else {
+        const msg = await res.text();
+        alert("交易失敗：" + msg);
+      }
+    } catch (err) {
+      console.error("Buy Now 錯誤", err);
     }
   };
 
-  fetchProduct();
-}, [id]);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}${API_PREFIX}${id}/`);
+        if (!response.ok) {
+          setError(response.status === 404 ? "商品不存在" : "發生錯誤，請稍後再試");
+          return;
+        }
+
+        const data = await response.json();
+        setProduct(data);
+        console.log("商品資料:", data.total_number);
+        setError(null);
+      } catch (error) {
+        console.error("API 請求失敗", error);
+        setError("無法連接伺服器");
+      }
+    };
+
+    const checkFavorite = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/api/favorites/list/`, {
+          credentials: "include",
+        });
+        if (res.ok) {
+          const list = await res.json();
+          setIsFavorite(list.includes(parseInt(id)));
+        }
+      } catch (err) {
+        console.error("收藏查詢失敗", err);
+      }
+    };
+
+    fetchProduct();
+    checkFavorite();
+  }, [id]);
+
 
 
   const textColor = darkMode ? "#ffffff" : "#000000";
@@ -81,7 +137,7 @@ function Item_Page_ID() {
                 <MDBox mt={3} mb={3} ml={3}>
                   <CardMedia
                     component="img"
-                    src={product.picture_url || "https://via.placeholder.com/400"}
+                    src={`${BASE_URL}${product.product_image}` || "https://via.placeholder.com/400"}
                     title={product.product_name}
                     sx={{
                       maxWidth: "100%",
@@ -114,36 +170,43 @@ function Item_Page_ID() {
 
                   <MDBox mt={2} mb={2} mr={4} sx={{ maxHeight: "100px", minHeight: "75px" }}>
                     <MDTypography variant="h4" fontWeight="medium">
-                      Position: {product.position || "N/A"}
+                      Trading Location: {product.trading_location || "N/A"}
                     </MDTypography>
                   </MDBox>
 
                   <MDBox mt={2} mb={2} mr={2}>
                     <Grid container spacing={2}>
                       <Grid item xs={12} md={2}>
-                        <BasicSelect />
+                        <BasicSelect maxNumber={product?.total_number || 3} onChange={setQuantity} />
                       </Grid>
                       <Grid item md={2} sx={{ display: { xs: "none", md: "block" } }} />
                       <Grid item xs={12} md={2}>
-                        <MDButton sx={(theme) => ({
-                          backgroundColor: darkMode ? theme.palette.grey[800] : theme.palette.grey[200],
-                        })}>
-                          <FavoriteIcon sx={{ color: "primary.main" }} />
-                          <MDTypography variant="h6" fontWeight="medium" color="primary">
-                            Like
+                        <MDButton
+                          sx={(theme) => ({
+                            backgroundColor: darkMode ? theme.palette.grey[800] : theme.palette.grey[200],
+                          })}
+                          onClick={toggleFavorite}
+                        >
+                          {isFavorite ? (
+                            <FavoriteIcon sx={{ color: "error.main" }} />
+                          ) : (
+                            <FavoriteBorderIcon sx={{ color: "primary.main" }} />
+                          )}
+                          <MDTypography variant="h6" fontWeight="medium" color={isFavorite ? "error" : "primary"}>
+                            {isFavorite ? "Liked" : "Like"}
                           </MDTypography>
                         </MDButton>
                       </Grid>
-                      <Grid item xs={12} md={3}>
+                      {/* <Grid item xs={12} md={3}>
                         <MDButton variant="outlined" color="primary">
                           <Icon sx={{ color: "primary.main" }}>shopping_cart</Icon>
                           <MDTypography variant="h6" fontWeight="medium" color="primary">
                             Add to cart
                           </MDTypography>
                         </MDButton>
-                      </Grid>
+                      </Grid> */}
                       <Grid item xs={12} md={3}>
-                        <MDButton variant="contained" color="primary">
+                        <MDButton variant="contained" color="primary" onClick={handleBuyNow}>
                           <MDTypography variant="h6" fontWeight="medium" color="white">
                             Buy Now
                           </MDTypography>
@@ -159,7 +222,7 @@ function Item_Page_ID() {
                           <LoyaltyIcon color="primary" />
                         </ListItemIcon>
                         <ListItemText
-                          primary={`Product Type: ${product.product_type || "None"}`}
+                          primary={`Product Type : ${product.product_type || "None"}`}
                           sx={{ "& .MuiTypography-root": { color: textColor } }}
                         />
                       </ListItem>
@@ -168,7 +231,7 @@ function Item_Page_ID() {
                           <LoyaltyIcon color="primary" />
                         </ListItemIcon>
                         <ListItemText
-                          primary={`Owner Email: ${product.owner_email || "None"}`}
+                          primary={`Owner Email : ${product.owner_email || "None"}`}
                           sx={{ "& .MuiTypography-root": { color: textColor } }}
                         />
                       </ListItem>

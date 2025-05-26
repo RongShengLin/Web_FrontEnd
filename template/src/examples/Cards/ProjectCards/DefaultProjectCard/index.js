@@ -32,7 +32,7 @@ import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 import MDAvatar from "components/MDAvatar";
 
-function DefaultProjectCard({ image, label, title, description, action, price }) {
+function DefaultProjectCard({ image, label, title, description, action, price, isFavorite, onToggleFavorite}) {
   return (
     <Card
       sx={{
@@ -118,8 +118,18 @@ function DefaultProjectCard({ image, label, title, description, action, price })
               {price}
             </MDTypography>
           </MDBox>
-          <MDButton circular iconOnly color="transparent" variant="contained">
-            <FavoriteBorderIcon sx={(theme) => ({ color: "primary.main"})}/>
+          <MDButton
+            circular
+            iconOnly
+            color="transparent"
+            variant="contained"
+            onClick={onToggleFavorite}
+          >
+            {isFavorite ? (
+              <FavoriteIcon sx={{ color: "error.main" }} />
+            ) : (
+              <FavoriteBorderIcon sx={{ color: "primary.main" }} />
+            )}
           </MDButton>
         </MDBox>
       </MDBox>
@@ -130,6 +140,8 @@ function DefaultProjectCard({ image, label, title, description, action, price })
 // Setting default values for the props of DefaultProjectCard
 DefaultProjectCard.defaultProps = {
   authors: [],
+  isFavorite: PropTypes.bool,
+  onToggleFavorite: PropTypes.func,
 };
 
 // Typechecking props for the DefaultProjectCard
@@ -138,6 +150,8 @@ DefaultProjectCard.propTypes = {
   label: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  isFavorite: false,
+  onToggleFavorite: () => {},
   action: PropTypes.shape({
     type: PropTypes.oneOf(["external", "internal"]),
     route: PropTypes.string.isRequired,

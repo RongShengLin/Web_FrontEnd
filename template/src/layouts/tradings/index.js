@@ -39,12 +39,62 @@ import ApprovalTradingData from "layouts/tradings/data/ApprovalTradingData";
 import HistoryTradingData from "layouts/tradings/data/HistoryTradingData";
 import AccordionUsage from "./components/accordion";
 
+import { useEffect, useState } from "react";
+import { BASE_URL } from "api/setting";
+
 function Tradings() {
-  const { columns, rows } = authorsTableData();
-  const { columns: QueueColumns, rows: QueueRows } = QueueTradingData();
+  const [transactions, setTransactions] = useState([]);
+  const [username, setUsername] = useState("");
+
+  // const { columns, rows } = authorsTableData();
+  const { columns, rows} = QueueTradingData({ transactions, currentUsername: username });
   const { columns: AwaitColumns, rows: AwaitRows } = AwaitTradingData();
   const { columns: ApprovalColumns, rows: ApprovalRows } = ApprovalTradingData();
   const { columns: HistoryColumns, rows: HistoryRows } = HistoryTradingData();
+  
+
+   useEffect(() => {
+    const fetchUser = async () => {
+      const res = await fetch(`${BASE_URL}/api/user/`, { credentials: "include" });
+      const user = await res.json();
+      setUsername(user.name);
+    };
+
+    const fetchTransactions = async () => {
+      const res = await fetch(`${BASE_URL}/api/auctions/transaction_list/`, { credentials: "include" });
+      const data = await res.json();
+      setTransactions(data);
+      console.log("Fetched transactions:", data);
+    };
+
+    fetchUser();
+    fetchTransactions();
+  }, []);
+  
+
+  return (
+    <HomePageLayout>
+      <HomePageNavbar />
+      <MDBox pt={6} pb={3}>
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <AccordionUsage title={"Trade Queue"}>
+              <DataTable
+                table={{ columns, rows }}
+                isSorted={false}
+                entriesPerPage={false}
+                showTotalEntries={false}
+                noEndBorder
+              />
+            </AccordionUsage>
+          </Grid>
+          {/* 其他三區可以類似處理 */}
+        </Grid>
+      </MDBox>
+      <Footer />
+    </HomePageLayout>
+  );
+
   return (
     <HomePageLayout>
       <HomePageNavbar />

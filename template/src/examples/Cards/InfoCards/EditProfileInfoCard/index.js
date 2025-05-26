@@ -77,32 +77,40 @@ function ProfileInfoCard({ name, info, shadow }) {
   };
 
   const handleSave = async () => {
-    if (!profile) return;
-    if (uploadFile) {
-      const formData = new FormData();
-      formData.append("file", uploadFile);
-      formData.append("username", profile.name);
-      await fetch(`${BASE_URL}/api/upload/image`, {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
+    const formData = new FormData();
+    formData.append("name", profile.name);
+    formData.append("email", profile.email);
+    formData.append("student_id", profile.student_id);
+    formData.append("phone_number", profile.phone_number);
+    formData.append("trading_location", profile.trading_location);
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
     }
+    if (uploadFile) {
+      formData.append("head_image", uploadFile);
+    }
+
     await fetch(`${BASE_URL}/api/user/`, {
-      method: "PUT",
+      method: "POST",
+      body: formData,
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(profile),
-    }).catch((err) => console.error("Fetch error:", err));
+    });
 
     alert("Profile updated successfully");
 
     fetch(`${BASE_URL}/api/user/`, {
       method: "GET",
-      credentials: "include", 
+      credentials: "include",
     })
       .then((res) => res.json())
-      .then((data) => setProfile(data))
+      .then((data) => setProfile({
+        name: data.name || "",
+        email: data.email || "",
+        student_id: data.student_id || "",
+        phone_number: data.phone_number || "",
+        trading_location: data.trading_location || "",
+        head_image: data.head_image || "",
+      }))
       .catch((err) => console.error("Fetch error:", err));
   };
 
@@ -221,8 +229,8 @@ ProfileInfoCard.defaultProps = {
 // Typechecking props for the ProfileInfoCard
 ProfileInfoCard.propTypes = {
   name: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  // title: PropTypes.string.isRequired,
+  // description: PropTypes.string.isRequired,
   info: PropTypes.objectOf(PropTypes.string).isRequired,
   shadow: PropTypes.bool,
 };
