@@ -25,6 +25,7 @@ import HomePageLayout from "examples/LayoutContainers/HomePageLayout";
 import HomePageNavbar from "examples/Navbars/HomePageNavbar";
 import Footer from "examples/Footer";
 import BasicSelect from "examples/Select";
+import TimeManager from "./component/Time_selector/index.js";
 
 import { BASE_URL } from "api/setting";
 const API_PREFIX = "/api/auctions/";
@@ -38,6 +39,7 @@ function Item_Page_ID() {
 
   const [product, setProduct] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [selectedTime, setSelectedTime] = useState(null);
 
   const toggleFavorite = async () => {
     const action = isFavorite ? "remove" : "add";
@@ -57,10 +59,15 @@ function Item_Page_ID() {
     }
   };
   const handleBuyNow = async () => {
+    if (!selectedTime) {
+      alert("請選擇交易時間！");
+      return;
+    }
     try {
       const formData = new FormData();
       formData.append("product_id", id); 
-      formData.append("number", quantity);    
+      formData.append("number", quantity); 
+      formData.append("trading_time", selectedTime);   
       const res = await fetch(`${BASE_URL}/api/auctions/${id}/transact/`, {
         method: "POST",
         credentials: "include",
@@ -236,6 +243,17 @@ function Item_Page_ID() {
                         />
                       </ListItem>
                     </List>
+                  </MDBox>
+                  <MDBox display="flex" alignItems="center" gap={1} mb={1}>
+                      <MDTypography variant="h4" fontWeight="bold" textTransform="capitalize">
+                          Trading Times
+                      </MDTypography>
+                  </MDBox>
+                  <MDBox display="flex" alignItems="center" gap={1} mb={1}>
+                      <TimeManager
+                        value={product?.available_times || []}
+                        onChange={(selected) => setSelectedTime(selected)}
+                      />
                   </MDBox>
                 </MDBox>
               </Grid>

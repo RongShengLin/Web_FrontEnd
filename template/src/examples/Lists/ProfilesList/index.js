@@ -35,12 +35,21 @@ import { useMaterialUIController } from "context";
 import Bill from "layouts/billing/components/Bill";
 import { useNavigate } from "react-router-dom";
 
-function ProfilesList({ title, profiles, shadow }) {
+function ProfilesList({ title, profiles, shadow, onDelete  }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
   const navigate = useNavigate();
-  const renderProfiles = profiles.map(({ image, name, price, num_item}) => (
-    <Bill key={name || index} image={image} name={name} price={price} number_items={num_item} />
+
+  const renderProfiles = profiles.map(({ image, name, price, num_item, product_id }) => (
+    <Bill
+      key={product_id}
+      image={image}
+      name={name}
+      price={price}
+      number_items={num_item}
+      product_id={product_id}
+      onDelete={onDelete}
+    />
   ));
 
   return (
@@ -74,6 +83,7 @@ ProfilesList.propTypes = {
   title: PropTypes.string.isRequired,
   profiles: PropTypes.arrayOf(PropTypes.object).isRequired,
   shadow: PropTypes.bool,
+  onDelete: PropTypes.func,
 };
 
 export default ProfilesList;

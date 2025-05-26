@@ -53,12 +53,38 @@ import {
   setOpenConfigurator,
 } from "context";
 
+import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "api/setting";
+
 function HomePageNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+  const isLoggedIn = sessionStorage.getItem("username") !== null;
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/api/logout/`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        sessionStorage.clear();       // 清除前端登入資訊
+        localStorage.clear();
+        alert("已成功登出");
+        navigate("/authentication/sign-in");  // 導回登入頁
+      } else {
+        alert("登出失敗");
+      }
+    } catch (err) {
+      console.error("登出錯誤:", err);
+      alert("登出時發生錯誤");
+    }
+  };
 
   useEffect(() => {
     // Setting the navbar type
@@ -168,22 +194,29 @@ function HomePageNavbar({ absolute, light, isMini }) {
                   <Icon sx={iconsStyle}>shopping_cart</Icon>
                 </IconButton>
               </Link>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                aria-controls="notification-menu"
-                aria-haspopup="true"
-                variant="contained"
-                onClick={handleOpenMenu}
-              >
-                <Icon sx={iconsStyle}>login</Icon>
-              </IconButton>
+              {!isLoggedIn && (
+                <>
+                  <IconButton
+                    size="small"
+                    disableRipple
+                    color="inherit"
+                    sx={navbarIconButton}
+                    aria-controls="notification-menu"
+                    aria-haspopup="true"
+                    variant="contained"
+                    onClick={handleOpenMenu}
+                  >
+                    <Icon sx={iconsStyle}>login</Icon>
+                  </IconButton>
+                  {renderMenu()}
+                </>
+              )}
               {renderMenu()}
-              <IconButton sx={navbarIconButton} size="small" disableRipple>
-                <Icon sx={iconsStyle}>logout</Icon>
-              </IconButton>
+              {isLoggedIn && (
+                <IconButton sx={navbarIconButton} size="small" disableRipple onClick={handleLogout}>
+                  <Icon sx={iconsStyle}>logout</Icon>
+                </IconButton>
+              )}
             </MDBox>
           </MDBox>
         )}

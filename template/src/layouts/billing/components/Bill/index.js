@@ -28,10 +28,32 @@ import MDButton from "components/MDButton";
 // Material Dashboard 2 React context
 import { useMaterialUIController } from "context";
 import { Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "api/setting";
 
-function Bill({ image, name, price, number_items, noGutter }) {
+function Bill({ image, name, price, number_items, noGutter, product_id, onDelete}) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    if (!window.confirm("確定要刪除這個商品嗎？")) return;
+    try {
+      const res = await fetch(`${BASE_URL}/api/auctions/delete/${product_id}`, {
+        method: "POST",
+        credentials: "include",
+      });
+      if (res.ok) {
+        alert("商品已刪除");
+        if (onDelete) onDelete(product_id); 
+      } else {
+        const msg = await res.text();
+        alert("刪除失敗：" + msg);
+      }
+    } catch (err) {
+      console.error("刪除商品失敗", err);
+    }
+  };
 
   return (
     <MDBox component="li"
@@ -74,11 +96,11 @@ function Bill({ image, name, price, number_items, noGutter }) {
 
               <MDBox display="flex" alignItems="center" mt={{ xs: 2, sm: 0 }} ml={{ xs: -1.5, sm: 0 }}>
                 <MDBox mr={1}>
-                  <MDButton variant="text" color="error">
+                  <MDButton variant="text" color="error" onClick={handleDelete}>
                     <Icon>delete</Icon>&nbsp;delete
                   </MDButton>
                 </MDBox>
-                <MDButton variant="text" color={darkMode ? "white" : "dark"}>
+                <MDButton variant="text" color={darkMode ? "white" : "dark"} onClick={() => navigate(`/item_edit/${product_id}`)}>
                   <Icon>edit</Icon>&nbsp;edit
                 </MDButton>
               </MDBox>
@@ -118,6 +140,8 @@ Bill.propTypes = {
   price: PropTypes.string.isRequired,
   number_items: PropTypes.string.isRequired,
   noGutter: PropTypes.bool,
+  product_id: PropTypes.number.isRequired,
+  onDelete: PropTypes.func,
 };
 
 export default Bill;

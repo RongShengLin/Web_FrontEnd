@@ -100,23 +100,7 @@ function ProfileInfoCard({ name, info, shadow }) {
 
     alert("Profile updated successfully");
     sessionStorage.setItem("username", profile.name);
-    navigate("/edit_profile");
-
-    fetch(`${BASE_URL}/api/user/`, {
-      method: "GET",
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => setProfile({
-        name: data.name || "",
-        email: data.email || "",
-        student_id: data.student_id || "",
-        phone_number: data.phone_number || "",
-        trading_location: data.trading_location || "",
-        head_image: data.head_image || "",
-      }))
-      .catch((err) => console.error("Fetch error:", err));
-      
+    navigate("/profile");
   };
 
   return (

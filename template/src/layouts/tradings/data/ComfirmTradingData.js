@@ -41,7 +41,7 @@ import { Description } from "@mui/icons-material";
 import MDButton from "components/MDButton";
 import { BASE_URL } from "api/setting";
 
-export default function data({ transactions = [], currentUsername }) {
+export default function data({ transactions = [], currentUsername, onUpdate }) {
   const Author = ({ image, name, email }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
       <MDAvatar src={image} name={name} size="sm" />
@@ -67,7 +67,9 @@ export default function data({ transactions = [], currentUsername }) {
     </MDBox>
   );
 
-  const rows = transactions.map((t) => {
+  const rows = transactions
+    .filter((t) => t.transactionrecord_stat === "Trading")
+    .map((t) => {
     const isSeller = t.seller_name === currentUsername;
     const isBuyer = t.buyer_name === currentUsername;
 
@@ -75,7 +77,7 @@ export default function data({ transactions = [], currentUsername }) {
       Product: <Product image={`${BASE_URL}${t.product_image}`} name={t.product_name} />,
       Name: <MDTypography variant="h5" color="text" fontWeight="medium">{t.product_name}</MDTypography>,
       Price: <MDTypography variant="h5" color="error" fontWeight="medium">${t.price}</MDTypography>,
-      number: <MDTypography variant="h5" color="text" fontWeight="medium">{t.quantity || 1}</MDTypography>,
+      // number: <MDTypography variant="h5" color="text" fontWeight="medium">{t.quantity || 1}</MDTypography>,
       Time_Location: (
         <MDBox lineHeight={1} textAlign="center">
           <MDTypography variant="button" fontWeight="medium" display="block">
@@ -101,7 +103,7 @@ export default function data({ transactions = [], currentUsername }) {
         ) : (
           <MDButton
             variant="contained"
-            color="warning"
+            color="primary"
             onClick={() => handleConfirm(t.trans_id, "seller")}
           >
             <MDTypography variant="h6" fontWeight="medium" color="white">
@@ -116,7 +118,7 @@ export default function data({ transactions = [], currentUsername }) {
         </MDTypography>
       ),
 
-      Buyer: !isBuyer ? (
+      Buyer: isBuyer ? (
         t.buyer_confim ? (
           <MDTypography variant="h6" color="success" fontWeight="medium">
             <Icon>check_circle</Icon> 已確認
@@ -124,7 +126,7 @@ export default function data({ transactions = [], currentUsername }) {
         ) : (
           <MDButton
             variant="contained"
-            color="info"
+            color="primary"
             onClick={() => handleConfirm(t.trans_id, "buyer")}
           >
             <MDTypography variant="h6" fontWeight="medium" color="white">
@@ -143,13 +145,13 @@ export default function data({ transactions = [], currentUsername }) {
 
   const handleConfirm = async (trans_id, step) => {
     try {
-      const res = await fetch(`${BASE_URL}/api/auctions/confirm/${trans_id}/${step}`, {
+      const res = await fetch(`${BASE_URL}/api/auctions/update_transaction/${trans_id}/`, {
         method: "POST",
         credentials: "include",
       });
       const msg = await res.text();
-      alert(msg);
-      window.location.reload(); // 刷新頁面
+      // alert(msg);
+      onUpdate();
     } catch (err) {
       console.error("更新狀態失敗", err);
       alert("操作失敗");
@@ -161,7 +163,7 @@ export default function data({ transactions = [], currentUsername }) {
       { Header: "Product", accessor: "Product", align: "left" },
       { Header: "Name", accessor: "Name", align: "left" },
       { Header: "Price", accessor: "Price", align: "center" },
-      { Header: "Number", accessor: "number", align: "center" },
+      // { Header: "Number", accessor: "number", align: "center" },
       { Header: "Time and Location", accessor: "Time_Location", align: "center" },
       { Header: "Trader", accessor: "Trader", align: "center" },
       { Header: "Seller", accessor: "Seller", align: "center" },

@@ -41,12 +41,43 @@ function Overview() {
     trading_location: "",
     head_image: "",
   });
+  const [products, setProducts] = useState([]);
 
   // const navigate = useNavigate();
+  const handleDeleteRefresh = (deletedId) => {
+    setProducts((prev) => prev.filter((item) => item.product_id !== deletedId));
+  };
+
+  const loadProducts = async () => {
+    const username = sessionStorage.getItem("username") || localStorage.getItem("username");
+    if (!username) return;
+
+    try {
+      const res = await fetch(`${BASE_URL}/api/auctions/?username=${username}`, {
+        credentials: "include",
+      });
+      if (res.ok) {
+        const productList = await res.json();
+        // console.log("Fetched products:", productList);
+        const formatted = productList.map((p) => ({
+          product_id: p.product_id,
+          image: `${BASE_URL}${p.product_image}`,
+          name: p.product_name,
+          price: `$${p.price}`,
+          num_item: p.total_number || 0,
+        }));
+        setProducts(formatted);
+      } else {
+        console.error("無法取得商品資料");
+      }
+    } catch (err) {
+      console.error("fetch product error:", err);
+    }
+  };
 
   const loadProfile = async () => {
     const name = sessionStorage.getItem("username") || localStorage.getItem("username");
-    console.log("loadProfile", name);
+    // console.log("loadProfile", name);
     if (name) {
       fetch(`${BASE_URL}/api/user/`, {
         method: "GET",
@@ -56,11 +87,12 @@ function Overview() {
         .then((data) => setProfile(data))
         .catch((err) => console.error("Fetch error:", err));
     }
-    console.log("Profile data:", profile.head_image);
+    // console.log("Profile data:", profile.head_image);
   };
 
   useEffect(() => {
     loadProfile();
+    loadProducts();
   }, []);
 
   return (
@@ -89,7 +121,7 @@ function Overview() {
               <Divider orientation="vertical" display="inline-box" sx={{ mx: 2 }} />
             </Grid>
             <Grid item xs={12} xl={8}>
-              <ProfilesList title="product" profiles={profilesListData} shadow={false} />
+              <ProfilesList title="My Products" profiles={products} shadow={false} onDelete={handleDeleteRefresh}/>
             </Grid>
             <MDBox mt={2}>
               <MDTypography variant="h6">頭像預覽：</MDTypography>

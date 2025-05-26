@@ -29,6 +29,7 @@ import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import MDAvatar from "components/MDAvatar";
 
 
 // Data
@@ -113,19 +114,11 @@ function Tables() {
             </MDTypography>
           ),
           owner_email: (
-            <MDBox display="flex" alignItems="center" gap={1}>
-              <img
-                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${item.owner_email}`}
-                alt="avatar"
-                style={{ width: 32, height: 32, borderRadius: "50%" }}
-              />
-              <MDBox display="flex" flexDirection="column">
-                <MDTypography variant="button" fontWeight="medium" color="text">
-                  {item.owner_email.split("@")[0]}
-                </MDTypography>
-                <MDTypography variant="caption" color="text">
-                  {item.owner_email}
-                </MDTypography>
+            <MDBox display="flex" alignItems="center" lineHeight={1}>
+              <MDAvatar src={`${BASE_URL}${item.owner_head_image}`} name={item.owner_name} size="sm" />
+              <MDBox ml={2} lineHeight={1}>
+                <MDTypography display="block" variant="button" fontWeight="medium">{item.owner_name}</MDTypography>
+                <MDTypography variant="caption">{item.owner_email}</MDTypography>
               </MDBox>
             </MDBox>
           ),

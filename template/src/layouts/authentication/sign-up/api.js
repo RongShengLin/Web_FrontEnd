@@ -11,7 +11,7 @@ import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 
 import bgImage from "assets/images/bg-sign-up-cover.jpeg";
-
+import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "api/setting";
 const API_PREFIX = "/api/register/";
 
@@ -24,6 +24,7 @@ function Register() {
     const [message, setMessage] = useState("");
     const [studentId, setStudentId] = useState("");
     const fileInputRef = useRef(null);
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -59,6 +60,7 @@ function Register() {
 
             if (text === "OK") {
               setMessage("註冊成功，請前往登入");
+              navigate(`/authentication/sign-in`);
             } else {
               setMessage(text);
             }

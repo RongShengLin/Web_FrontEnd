@@ -21,9 +21,10 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 import { useMaterialUIController } from "context";
+import PropTypes from "prop-types";
 
 
-export default function TimeManager() {
+export default function TimeManager({ value = [], onChange }) {
   const [timeList] = useState(["2025-05-24T12:00", "2025-05-25T14:30", "2025-05-26T09:15",]);
   
   const [controller] = useMaterialUIController();
@@ -33,7 +34,11 @@ export default function TimeManager() {
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   const handleCheck = (index) => {
-    setSelectedIndex(index === selectedIndex ? null : index);
+    const newIndex = index === selectedIndex ? null : index;
+    setSelectedIndex(newIndex);
+    if (onChange) {
+      onChange(newIndex !== null ? value[newIndex] : null);
+    }
   };
 
   return (
@@ -53,21 +58,26 @@ export default function TimeManager() {
     </AccordionSummary>
     <AccordionDetails>
         <List>
-            {timeList.map((time, index) => (
-                <ListItem key={index} disablePadding>
-                    <FormControlLabel
-                    control={
-                        <Checkbox
-                        checked={selectedIndex === index}
-                        onChange={() => handleCheck(index)}
-                        />
-                    }
-                    label={new Date(time).toLocaleString()}
-                    />
-                </ListItem>
-            ))}
+          {value.map((time, index) => (
+            <ListItem key={index} disablePadding>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={selectedIndex === index}
+                    onChange={() => handleCheck(index)}
+                  />
+                }
+                label={new Date(time).toLocaleString()}
+              />
+            </ListItem>
+          ))}
         </List>
     </AccordionDetails>
     </Accordion>
   );
 }
+
+TimeManager.propTypes = {
+  value: PropTypes.arrayOf(PropTypes.string),
+  onChange: PropTypes.func,
+};

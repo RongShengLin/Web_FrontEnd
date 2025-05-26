@@ -46,11 +46,19 @@ function Tradings() {
   const [transactions, setTransactions] = useState([]);
   const [username, setUsername] = useState("");
 
+  const fetchTransactions = async () => {
+    const res = await fetch(`${BASE_URL}/api/auctions/transaction_list/`, { credentials: "include" });
+    const data = await res.json();
+    setTransactions(data);
+    console.log("Fetched transactions:", data);
+  };
+
+
   // const { columns, rows } = authorsTableData();
-  const { columns, rows} = QueueTradingData({ transactions, currentUsername: username });
-  const { columns: AwaitColumns, rows: AwaitRows } = AwaitTradingData();
-  const { columns: ApprovalColumns, rows: ApprovalRows } = ApprovalTradingData();
-  const { columns: HistoryColumns, rows: HistoryRows } = HistoryTradingData();
+  const { columns: TradingColumns, rows: TradingRows} = QueueTradingData({ transactions, currentUsername: username, onUpdate: fetchTransactions });
+  const { columns: AwaitColumns, rows: AwaitRows } = AwaitTradingData({ transactions, currentUsername: username, onUpdate: fetchTransactions });
+  const { columns: ApprovalColumns, rows: ApprovalRows } = ApprovalTradingData({ transactions, currentUsername: username, onUpdate: fetchTransactions });
+  const { columns: HistoryColumns, rows: HistoryRows } = HistoryTradingData({ transactions, currentUsername: username, onUpdate: fetchTransactions });
   
 
    useEffect(() => {
@@ -58,13 +66,6 @@ function Tradings() {
       const res = await fetch(`${BASE_URL}/api/user/`, { credentials: "include" });
       const user = await res.json();
       setUsername(user.name);
-    };
-
-    const fetchTransactions = async () => {
-      const res = await fetch(`${BASE_URL}/api/auctions/transaction_list/`, { credentials: "include" });
-      const data = await res.json();
-      setTransactions(data);
-      console.log("Fetched transactions:", data);
     };
 
     fetchUser();
@@ -80,7 +81,7 @@ function Tradings() {
           <Grid item xs={12}>
             <AccordionUsage title={"Trade Queue"}>
               <DataTable
-                table={{ columns, rows }}
+                table={{ columns: TradingColumns, rows: TradingRows}}
                 isSorted={false}
                 entriesPerPage={false}
                 showTotalEntries={false}
@@ -88,7 +89,39 @@ function Tradings() {
               />
             </AccordionUsage>
           </Grid>
-          {/* 其他三區可以類似處理 */}
+           <Grid item xs={12}>
+             <AccordionUsage title={"Self Approval"}>
+              <DataTable
+                table={{ columns: ApprovalColumns, rows: ApprovalRows }}
+                isSorted={false}
+                entriesPerPage={false}
+                showTotalEntries={false}
+                noEndBorder
+              />
+            </AccordionUsage>
+          </Grid>
+          <Grid item xs={12}>
+             <AccordionUsage title={"Await Confirm"}>
+              <DataTable
+                table={{ columns: AwaitColumns, rows: AwaitRows }}
+                isSorted={false}
+                entriesPerPage={false}
+                showTotalEntries={false}
+                noEndBorder
+              />
+            </AccordionUsage>
+          </Grid>
+          <Grid item xs={12}>
+             <AccordionUsage title={"Trade History"}>
+              <DataTable
+                table={{ columns: HistoryColumns, rows: HistoryRows }}
+                isSorted={false}
+                entriesPerPage={false}
+                showTotalEntries={false}
+                noEndBorder
+              />
+            </AccordionUsage>
+          </Grid>
         </Grid>
       </MDBox>
       <Footer />

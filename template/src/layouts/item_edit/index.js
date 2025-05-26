@@ -69,6 +69,7 @@ import MDInput from "components/MDInput";
 import { useParams } from "react-router-dom";
 import { number } from "prop-types";
 import { BASE_URL } from "api/setting";
+import { useNavigate } from "react-router-dom";
 
 function Item_Edit() {
     const [product, setProduct] = useState({
@@ -89,7 +90,7 @@ function Item_Edit() {
     const [tradingTimes, setTradingTimes] = useState([]);
     const [categories, setCategories] = useState([]);
     const [uploadImage, setUploadImage] = useState(null);
-
+    const navigate = useNavigate();
     const [controller] = useMaterialUIController();
     const { darkMode } = controller;
     const { sales, tasks } = reportsLineChartData;
@@ -109,10 +110,11 @@ function Item_Edit() {
                 setProduct({
                     name: data.product_name,
                     price: data.price,
-                    description: data.description || "",
-                    number: data.number || -1,
+                    description: data.product_description || "",
+                    number: data.total_number || -1,
                     trading_location: data.trading_location || "",
                     product_type: data.product_type,
+                    product_image: data.product_image || "",
                 });
                 setTradingTimes((data.available_times || []).map(t =>
                     new Date(t).toISOString().slice(0, 16) // ISO to datetime-local input 格式
@@ -133,7 +135,11 @@ function Item_Edit() {
         formData.append("available_times", JSON.stringify(tradingTimes));
         if (uploadImage) formData.append("product_image", uploadImage);
 
-        const method = id ? "PUT" : "POST";
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}:`, value);
+        }
+
+        const method = id ? "POST" : "POST";
         const url = id
             ? `${BASE_URL}/api/auctions/${id}/`
             : `${BASE_URL}/api/auctions/`;
@@ -145,13 +151,28 @@ function Item_Edit() {
             console.log(`${key}:`, value);
         }
         }
-        await fetch(url, {
-            method,
-            credentials: "include",
-            body: formData,
-        });
+        try {
+            const res = await fetch(url, {
+                method,
+                credentials: "include",
+                body: formData,
+            });
 
-        alert(id ? "商品已更新" : "商品已新增");
+            const data = await res.json(); // ← 讀取回傳資料
+
+            if (res.ok) {
+                alert(id ? `商品已更新：${data.message || "成功"}` : `商品已新增：${data.message || "成功"}`);
+                console.log("成功回傳內容:", data);
+                navigate(`/profile`);
+            } else {
+                alert(`操作失敗：${data.message || data.error || "未知錯誤"}`);
+                console.error("錯誤內容:", data);
+            }
+        } catch (err) {
+            alert("伺服器連線錯誤");
+            console.error("發生例外錯誤:", err);
+        }
+
     };
 
 
@@ -171,7 +192,7 @@ function Item_Edit() {
                 <Grid item xs={12} md={5}>
                     <MDBox mt={3} mb={3} ml={3}>
                         <CardMedia
-                            src={homeDecor1}
+                            src={product.product_image ? `${BASE_URL}${product.product_image}` : homeDecor1}
                             component="img"
                             title="item_image"
                             sx={{
