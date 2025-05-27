@@ -52,8 +52,8 @@ function Login() {
         const email = data.email;
 
         if (rememberMe) {
-          localStorage.setItem("username", user);
-          localStorage.setItem("email", email);
+          // localStorage.setItem("username", user);
+          // localStorage.setItem("email", email);
         }
         sessionStorage.setItem("username", user);
         sessionStorage.setItem("email", email);
