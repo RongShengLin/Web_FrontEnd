@@ -189,11 +189,11 @@ function HomePageNavbar({ absolute, light, isMini }) {
               >
                 <Icon sx={iconsStyle}>settings</Icon>
               </IconButton> */}
-              <Link to="/billing">
+              {/* <Link to="/billing">
                 <IconButton sx={navbarIconButton} size="small" disableRipple>
                   <Icon sx={iconsStyle}>shopping_cart</Icon>
                 </IconButton>
-              </Link>
+              </Link> */}
               {!isLoggedIn && (
                 <>
                   <IconButton

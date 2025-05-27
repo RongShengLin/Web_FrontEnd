@@ -85,10 +85,8 @@ const routes = [
   //   component: <Notifications />,
   // },
   {
-    type: "collapse",
-    name: "Profile",
+    type: "route",
     key: "profile",
-    icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
     component: <Profile />,
   },
@@ -113,10 +111,8 @@ const routes = [
     component: <SignUp />,
   },
   {
-    type: "collapse",
-    name: "Item",
+    type: "route",
     key: "ItemPage",
-    icon: <Icon fontSize="small">shopping_cart</Icon>,
     route: "/ItemPage",
     component: <Item_Page />,
   },

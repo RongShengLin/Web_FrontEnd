@@ -154,7 +154,7 @@ export default function data({ transactions = [], currentUsername, onUpdate }) {
         credentials: "include",
       });
       const msg = await res.text();
-      alert(msg);
+      alert("確認交易");
       onUpdate();
     } catch (err) {
       console.error("更新狀態失敗", err);
