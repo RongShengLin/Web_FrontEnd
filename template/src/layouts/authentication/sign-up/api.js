@@ -10,7 +10,7 @@ import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 
-import bgImage from "assets/images/bg-sign-up-cover.jpeg";
+import bgImage from "assets/images/ntu.jpg";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "api/setting";
 const API_PREFIX = "/api/register/";

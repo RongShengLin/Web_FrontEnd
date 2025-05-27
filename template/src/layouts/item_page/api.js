@@ -77,8 +77,8 @@ function Item_Page_ID() {
       if (res.ok) {
         alert("交易請求已送出！");
       } else {
-        const msg = await res.text();
-        alert("交易失敗：" + msg);
+        const msg = await res.json();
+        alert("交易失敗：" + msg.message);
       }
     } catch (err) {
       console.error("Buy Now 錯誤", err);

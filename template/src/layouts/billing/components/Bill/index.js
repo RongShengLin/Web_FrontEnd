@@ -44,7 +44,8 @@ function Bill({ image, name, price, number_items, noGutter, product_id, onDelete
         credentials: "include",
       });
       if (res.ok) {
-        alert("商品已刪除");
+        const msg = await res.json();
+        alert(msg.message);
         if (onDelete) onDelete(product_id); 
       } else {
         const msg = await res.text();
